@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACE 私教全书题库</title>
+<style>
+  :root{
+    --ink:#14231c;
+    --paper:#f6f3ec;
+    --card:#fffdf8;
+    --line:#d9d3c4;
+    --moss:#3f6b4e;
+    --moss-deep:#2b4c37;
+    --clay:#c25e3a;
+    --gold:#b5872a;
+    --muted:#7a7566;
+    --ok:#2f7d4f;
+    --bad:#bb4034;
+    --shadow:0 1px 2px rgba(20,35,28,.06),0 8px 24px rgba(20,35,28,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Noto Serif SC",Georgia,"Songti SC","STSong",serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.65;
+    min-height:100vh;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px 80px}
+
+  header.top{
+    position:sticky;top:0;z-index:20;
+    background:rgba(246,243,236,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .top-inner{max-width:780px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px}
+  .brand{display:flex;flex-direction:column;line-height:1.15;cursor:pointer}
+  .brand .ey{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--moss);font-family:ui-monospace,"SFMono-Regular",Menlo,monospace}
+  .brand .tt{font-size:17px;font-weight:700}
+  .who{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+  .who b{color:var(--ink);font-weight:700}
+  .link-btn{background:none;border:none;color:var(--clay);font:inherit;font-size:13px;cursor:pointer;padding:4px 2px}
+  .link-btn:hover{text-decoration:underline}
+
+  .login-scene{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+  .login-card{
+    width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);
+    border-radius:18px;box-shadow:var(--shadow);padding:38px 34px;position:relative;overflow:hidden;
+  }
+  .login-card::before{
+    content:"";position:absolute;inset:0 0 auto 0;height:5px;
+    background:linear-gradient(90deg,var(--moss),var(--gold),var(--clay));
+  }
+  .login-card .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--moss);margin-bottom:12px}
+  .login-card h1{font-size:24px;font-weight:800;line-height:1.25;margin-bottom:6px}
+  .login-card p.sub{color:var(--muted);font-size:14px;margin-bottom:26px}
+  label.fld{display:block;font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0 0 6px 2px}
+  input.txt{
+    width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:11px;
+    font:inherit;font-size:15px;background:#fff;color:var(--ink);margin-bottom:16px;
+  }
+  input.txt:focus{outline:2px solid var(--moss);outline-offset:1px;border-color:transparent}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;padding:13px 18px;border:none;border-radius:11px;
+    background:var(--moss);color:#fbfaf5;font:inherit;font-size:15px;font-weight:700;
+    cursor:pointer;transition:transform .05s ease,background .2s;
+  }
+  .btn:hover{background:var(--moss-deep)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:transparent;color:var(--moss);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#efeadf}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .hint{font-size:12px;color:var(--muted);text-align:center;margin-top:16px}
+  .err{color:var(--bad);font-size:13px;margin:-8px 0 14px 2px;min-height:0}
+
+  section{margin-top:26px}
+  .stat-band{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    box-shadow:var(--shadow);padding:22px 24px;
+  }
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center}
+  .stat-grid .cell{padding:6px 4px}
+  .stat-grid .num{font-size:30px;font-weight:800;line-height:1;color:var(--moss-deep)}
+  .stat-grid .num.rate{color:var(--clay)}
+  .stat-grid .lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+  .bar{height:8px;border-radius:99px;background:#e7e1d3;overflow:hidden;margin-top:20px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--moss),var(--gold));transition:width .5s ease}
+  .band-sub{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:8px}
+
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 2px 14px}
+  .sec-head .n{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--gold);letter-spacing:.2em}
+  .sec-head h2{font-size:18px;font-weight:800}
+  .actions{display:flex;gap:12px;flex-wrap:wrap}
+  .actions .btn{width:auto;flex:1 1 auto}
+
+  /* chapter list */
+  .chlist{display:flex;flex-direction:column;gap:10px}
+  .chcard{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+    display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s;
+  }
+  .chcard:hover{border-color:var(--moss);box-shadow:var(--shadow)}
+  .chcard .chnum{
+    flex:none;width:40px;height:40px;border-radius:10px;background:#efeadf;color:var(--moss-deep);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-family:ui-monospace,Menlo,monospace;font-size:13px;
+  }
+  .chcard .chbody{flex:1;min-width:0}
+  .chcard .chtitle{font-weight:700;font-size:14.5px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .chcard .chmeta{font-size:12px;color:var(--muted);margin-top:3px;display:flex;gap:10px}
+  .chcard .chrate{font-weight:800;font-family:ui-monospace,Menlo,monospace;flex:none;font-size:15px;color:var(--moss-deep);min-width:44px;text-align:right}
+  .chcard .chrate.na{color:var(--muted);font-weight:600}
+  .chmini{height:4px;border-radius:99px;background:#e7e1d3;overflow:hidden;margin-top:8px}
+  .chmini > i{display:block;height:100%;background:var(--moss)}
+
+  .backline{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .backline button{background:none;border:none;color:var(--moss);font:inherit;font-weight:700;font-size:13px;cursor:pointer;padding:4px 2px;display:flex;align-items:center;gap:4px}
+  .backline button:hover{text-decoration:underline}
+
+  /* question map */
+  .qmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:8px}
+  .qdot{
+    aspect-ratio:1;border-radius:10px;border:1px solid var(--line);background:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+    cursor:pointer;color:var(--ink);font-family:ui-monospace,Menlo,monospace;transition:transform .05s,box-shadow .2s;
+  }
+  .qdot:hover{box-shadow:var(--shadow)}
+  .qdot:active{transform:translateY(1px)}
+  .qdot.ok{background:#e6f0e8;border-color:#bcd8c3;color:var(--ok)}
+  .qdot.bad{background:#f6e3e0;border-color:#e2b5ae;color:var(--bad)}
+
+  /* quiz */
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:26px 26px 24px}
+  .q-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:10px}
+  .q-count{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;letter-spacing:.08em;color:var(--moss);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .q-live{font-size:12px;color:var(--muted);flex:none}
+  .q-live b{color:var(--clay);font-weight:800}
+  .qbar{height:5px;border-radius:99px;background:#e7e1d3;overflow:hidden;margin:10px 0 22px}
+  .qbar > i{display:block;height:100%;background:var(--moss);transition:width .3s}
+  .q-stem{font-size:18px;font-weight:700;line-height:1.55;margin-bottom:20px}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{
+    display:flex;gap:12px;align-items:flex-start;text-align:left;
+    padding:13px 16px;border:1px solid var(--line);border-radius:12px;background:#fff;
+    font:inherit;font-size:15px;line-height:1.5;color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--moss);background:#fbfcfb}
+  .opt:disabled{cursor:default}
+  .opt .key{
+    flex:none;width:26px;height:26px;border-radius:7px;background:#efeadf;color:var(--moss-deep);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;font-family:ui-monospace,Menlo,monospace;
+  }
+  .opt.correct{border-color:#8fc0a0;background:#eaf3ec}
+  .opt.correct .key{background:var(--ok);color:#fff}
+  .opt.wrong{border-color:#dfa79f;background:#f8ebe8}
+  .opt.wrong .key{background:var(--bad);color:#fff}
+  .explain{
+    margin-top:18px;padding:16px 18px;border-left:3px solid var(--gold);
+    background:#f4efe2;border-radius:0 10px 10px 0;font-size:14px;line-height:1.7;
+    display:none;
+  }
+  .explain.show{display:block}
+  .explain .badge{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.1em;padding:2px 8px;border-radius:6px;margin-bottom:8px}
+  .explain .badge.ok{background:var(--ok);color:#fff}
+  .explain .badge.bad{background:var(--bad);color:#fff}
+  .explain .ans{font-weight:700;color:var(--moss-deep);margin-bottom:4px}
+  .nav-row{display:flex;gap:12px;margin-top:22px}
+  .nav-row .btn{width:auto;flex:1}
+
+  .empty{text-align:center;color:var(--muted);padding:30px 10px;font-size:14px}
+  footer.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:40px;line-height:1.7}
+  .hidden{display:none!important}
+  @media(max-width:520px){
+    .stat-grid .num{font-size:24px}
+    .q-stem{font-size:16px}
+    .actions{flex-direction:column}
+    .actions .btn{width:100%}
+    .chcard .chtitle{white-space:normal}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginScene" class="login-scene">
+  <div class="login-card">
+    <div class="eyebrow">ACE Personal Trainer</div>
+    <h1 id="loginTitle">私教全书题库</h1>
+    <p class="sub" id="loginSub">22 个章节 · 全书共 405 题</p>
+
+    <label class="fld" for="uName">用户名</label>
+    <input class="txt" id="uName" type="text" autocomplete="username" placeholder="输入你的用户名">
+
+    <label class="fld" for="uPass">密码</label>
+    <input class="txt" id="uPass" type="password" autocomplete="current-password" placeholder="输入密码">
+
+    <div class="err" id="loginErr"></div>
+
+    <button class="btn" id="loginBtn">登录</button>
+    <div style="height:10px"></div>
+    <button class="btn ghost" id="toggleMode">还没有账号？注册一个</button>
+
+    <p class="hint">账号与做题记录保存在本浏览器中，下次访问自动恢复。</p>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" class="hidden">
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand" id="brandHome">
+        <span class="ey">ACE Personal Trainer</span>
+        <span class="tt">私教全书题库</span>
+      </div>
+      <div class="who">
+        <span>你好，<b id="curUser">—</b></span>
+        <button class="link-btn" id="logoutBtn">退出</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- ============ HOME / OVERALL DASHBOARD ============ -->
+    <div id="home">
+      <section>
+        <div class="stat-band">
+          <div class="stat-grid">
+            <div class="cell"><div class="num" id="sAnswered">0</div><div class="lab">已作答</div></div>
+            <div class="cell"><div class="num rate" id="sRate">—</div><div class="lab">总正确率</div></div>
+            <div class="cell"><div class="num" id="sTotal">405</div><div class="lab">全库题数</div></div>
+          </div>
+          <div class="bar"><i id="progFill" style="width:0%"></i></div>
+          <div class="band-sub">
+            <span id="progText">进度 0 / 405</span>
+            <span id="corrText">答对 0 · 答错 0</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head"><span class="n">▶</span><h2>全库练习</h2></div>
+        <div class="actions">
+          <button class="btn" id="startAllBtn">全库随机开始</button>
+          <button class="btn ghost" id="resumeAllBtn">继续未做</button>
+          <button class="btn ghost" id="wrongAllBtn">只做错题</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head"><span class="n">▦</span><h2>按章节练习</h2></div>
+        <div class="chlist" id="chList"></div>
+      </section>
+
+      <section>
+        <div class="sec-head"><span class="n">↺</span><h2>记录管理</h2></div>
+        <div class="actions">
+          <button class="btn ghost" id="resetBtn">清空我的全部做题记录</button>
+        </div>
+      </section>
+
+      <footer class="foot">
+        题目内容依据 ACE《私人教练手册》整理，仅供个人学习复习使用。<br>
+        共 22 个章节 · 405 题 · 记录按用户分别保存
+      </footer>
+    </div>
+
+    <!-- ============ CHAPTER DASHBOARD ============ -->
+    <div id="chapterDash" class="hidden">
+      <div class="backline"><button id="chBackBtn">← 返回全部章节</button></div>
+      <section style="margin-top:0">
+        <div class="stat-band">
+          <div class="stat-grid">
+            <div class="cell"><div class="num" id="cAnswered">0</div><div class="lab">已作答</div></div>
+            <div class="cell"><div class="num rate" id="cRate">—</div><div class="lab">本章正确率</div></div>
+            <div class="cell"><div class="num" id="cTotal">0</div><div class="lab">本章题数</div></div>
+          </div>
+          <div class="bar"><i id="cProgFill" style="width:0%"></i></div>
+          <div class="band-sub">
+            <span id="cProgText">进度 0 / 0</span>
+            <span id="cCorrText">答对 0 · 答错 0</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head"><span class="n">▶</span><h2 id="cTitle">本章练习</h2></div>
+        <div class="actions">
+          <button class="btn" id="cStartBtn">从头开始</button>
+          <button class="btn ghost" id="cResumeBtn">继续未做</button>
+          <button class="btn ghost" id="cWrongBtn">只做错题</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head"><span class="n">▦</span><h2>题目一览</h2></div>
+        <div class="qmap" id="cQmap"></div>
+      </section>
+    </div>
+
+    <!-- ============ QUIZ ============ -->
+    <div id="quiz" class="hidden">
+      <section style="margin-top:20px">
+        <div class="quiz-card">
+          <div class="q-top">
+            <span class="q-count" id="qCount">第 1 / 20 题</span>
+            <span class="q-live">正确率 <b id="qLive">—</b></span>
+          </div>
+          <div class="qbar"><i id="qFill" style="width:0%"></i></div>
+
+          <div class="q-stem" id="qStem">题干</div>
+          <div class="opts" id="qOpts"></div>
+
+          <div class="explain" id="qExplain">
+            <span class="badge" id="exBadge">—</span>
+            <div class="ans" id="exAns"></div>
+            <div id="exText"></div>
+          </div>
+
+          <div class="nav-row">
+            <button class="btn ghost" id="backBtn">返回</button>
+            <button class="btn" id="nextBtn">下一题</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+/* ============ 题库数据（22 章，共 405 题） ============ */
+// ========== 第一章：私人教练的角色与执业范围 ==========
+const CH01 = {
+  id: "ch01", title: "第一章：私人教练的角色与执业范围",
+  questions: [
+    {stem:"进行职业认证的主要目的是___________。",opts:["为专业人员提供更多的教育，从而提升其知识、技能与能力","为专业人员的简历增色，以便他们在工作中获得更高的薪酬","评估认证申请者是否具备最基本的从业要求，从而保护公众免受伤害","在申请者获得学士学位后，就其对关键概念的理解进行检验"],ans:2,exp:"认证的主要目的是通过评估专业人员是否具备安全、有效开展工作所需的知识、技能与能力，从而始终保护公众免受伤害。"},
+    {stem:"下列哪一项属于ACE私人教练的执业范围？",opts:["通过生活经验指导客户哪些因素会对人们坚持参加运动方案产生不利影响","筛查阻碍客户参加运动的限制因素，促进运动方案的设计","为客户设计康复运动方案，并对客户的损伤状况进行评估","为经常少吃一餐的客户推荐有效的营养补充剂"],ans:1,exp:"私人教练对客户进行筛查，为他们设计运动方案并进行训练指导，必要时将客户推荐给医疗保健连续统一体内其他有资质的成员。专业健身人员不能提供咨询、康复服务，也不能推荐补充剂。"},
+    {stem:"下列哪一项超出ACE认证私人教练的执业范围？",opts:["为获得医生运动许可的II型糖尿病患者制定运动方案","为客户提供指引、激励和反馈，促进其坚持参加运动方案","按照医生的推荐，对客户执行康复后运动方案","按照医生的推荐，为客户编制详细的营养方案与具体的饮食计划"],ans:3,exp:"私人教练可就《膳食指南》推荐对客户进行教育。如果客户需要更详细的营养方案（具体膳食计划、食谱或推荐补充剂等），则应将客户推荐给注册营养师。"},
+    {stem:"ACE私人教练证书的申请者从何时开始同意遵守ACE职业道德准则？",opts:["报名参加ACE认证考试时","申请者获得其第一张ACE证书时","从收到ACE职业道德准则与纸质版的ACE证书开始","成为一名ACE认证私人教练时"],ans:0,exp:"每一位报名参加ACE认证考试的个人都必须同意在考试过程中及今后作为教练的生涯中遵守ACE职业道德准则，并全面了解该准则及违反后果。"},
+    {stem:"ACE制定每两年至少20小时继续教育这一最低要求的主要原因是帮助___________。",opts:["获得个人提升，有利于其职业发展","在自己的简历中加入新的专业证书，增加个人收入","提升个人履历，吸引更多的客户","了解运动科学的最新研究成果与健身和健康指南"],ans:3,exp:"继续教育已成为医疗保健领域的标准要求。完成后教练可了解运动科学最新研究发现，并确保服务与健身、保健最新指南保持一致，从而保护公众免受伤害。"},
+    {stem:"下列哪一项属于ACE认证私人教练的执业范围？",opts:["帮助客户更好地了解食物份量与健康食品，从而帮助他们做出更明智的选择","为客户提供4周食谱与购物清单，帮助他们走上健康饮食的正轨","回顾过去24小时的饮食情况，帮助客户了解自己缺少哪些微量营养素","就静息代谢率及热量摄入要小于RMR等知识对客户进行教育，帮助减轻体重"],ans:0,exp:"私人教练可就《膳食指南》推荐对客户进行教育，帮助其了解健康食品并作出更明智选择。若需更详细营养方案（膳食计划、食谱、补充剂），应推荐给注册营养师。"},
+    {stem:"私人教练只有________，才能为肌肉紧张、酸痛的客户按摩。",opts:["广泛了解按摩知识","客户同意其按摩","获得按摩治疗师证书","按摩治疗师不在并且私人教练接受过一些培训"],ans:2,exp:"私人教练可针对按摩益处对客户进行教育，但不能亲自按摩，否则属于无证按摩行为。教练可传授自我肌筋膜放松术（如使用泡沫滚轴）。"},
+    {stem:"美国运动委员会认可的大多数健康认证项目（注册营养师、职业治疗师、执业护士等）的共同特点是？",opts:["这些认证都要求申请者至少持有学士学位","这些证书都获得美国国家执照事务委员会（NCCA）的认可","这些证书的持有者在健康领域的执业范围相同","这些证书在美国大多数州都满足最低的职业能力要求"],ans:1,exp:"NCCA对医疗保健领域大部分认证项目进行复审与鉴定，包括注册营养师、职业治疗师、运动教练员、护士、执业护士、按摩师、私人教练、团体健身教练等。"},
+    {stem:"关于私人教练向客户推荐营养补充剂，下列叙述最恰当的一项是？",opts:["只能向客户推荐自己已投职业责任险的补充剂","如果未持有注册营养师或医学博士学位等其他证书，则不具有向他人推荐补充剂的合法资质","私人教练应接受专门的知识培训后才能向客户推荐营养补充剂","由于可能引起并发症，私人教练只能向客户推荐植物性补充剂"],ans:1,exp:"若需具体膳食计划、食谱或推荐补充剂，应将客户推荐给注册营养师。私人教练不具备推荐补充剂的合法资质。"},
+    {stem:"ACE认证私人教练希望提升证书以外的知识、技能与能力，完成哪种继续教育最有利于实现该目标？",opts:["获得NCCA认可的第二份私教证书","参加专题工作坊——如何将营养补充剂融入营养计划","从非NCCA认可的机构那里获得在线私教证书","获得一份NCCA认可的高级体适能证书"],ans:3,exp:"私人教练在专业领域获得高级知识与技能后能提供更好服务。专业领域要维持在执业范围内，或在执业范围内对知识进行补充。"},
+    {stem:"一般来说，ACE推荐考生花多长时间充分准备ACE私人教练认证考试？",opts:["1–2个月","3–4个月","5–6个月","7–8个月"],ans:1,exp:"进入私教行业路径不固定，考生应按自身时间、财力、学习方式选择。ACE推荐平均花3–4个月为认证考试做好充分准备。"},
+    {stem:"对于绝大多数运动项目，每周至少需要进行___________中等强度体力活动（如快步走）才会有益于身体健康。",opts:["60分钟","75分钟","150分钟","180分钟"],ans:2,exp:"每周至少需要进行150分钟中等强度体力活动（如快步走）才会有益于身体健康。增加其他体力活动会额外获取其他益处。"},
+    {stem:"下列关于私人教练在医疗保健联盟中所处位置，叙述正确的是？",opts:["教练能够为客户提供详细的饮食计划，从而抵御慢性疾病","教练处在医疗保健联盟金字塔的顶端，因为跟客户训练的时间长","教练能够向客户示范在遵守医生一般性建议的条件下如何有效地开展运动","教练是持证专业人员，能够开具具体的运动方案处方"],ans:2,exp:"其他成员可能提供一般性运动指导，但很少有人能真正教客户如何有效运动，这正是私人教练在医疗保健联盟中所处的独特位置。"},
+    {stem:"进行健身认证的主要目的是？",opts:["保护公众免受损伤","证明持证者掌握了健身行业的知识","增加持证者的收入潜力","提供实践经验"],ans:0,exp:"认证的主要目的是通过评估专业健身人员是否能够安全有效开展工作，从而保护公众免受损伤。"},
+    {stem:"“执业范围”的定义不包括哪一项？",opts:["专业健身人员在特定领域可提供的合法服务范围","在工作场所必须遵守的职业道德准则","可以供私教服务的场所","必须遵守的指南或参数标准"],ans:1,exp:"“执业范围”是指在某领域提供服务的合法范畴，从业人员在此范畴内可提供服务并必须遵守相关方针和要求。职业道德准则不属于执业范围的定义。"},
+    {stem:"根据专业健身人员的一般性执业范围，教练可对骨骼肌损伤的客户进行康复训练。",opts:["正确","错误"],ans:1,exp:"客户康复后若获得运动许可，教练可为其设计运动方案；但客户发生损伤后，教练不能对他们进行康复训练。"},
+    {stem:"对客户脊柱前弯姿势的病因进行诊断并为他们开具运动方案处方，都属于私人教练的执业范围。",opts:["正确","错误"],ans:1,exp:"教练绝不能对客户的病情进行诊断或为他们开具任何治疗处方。"},
+    {stem:"续证时，应试者至少要完成_____小时的继续教育学分，并且目前持有_______证书（非北美地区对应AED）。",opts:["10；心肺复苏","20；风险管理","20；心肺复苏","30；风险管理"],ans:2,exp:"续证需完成至少20小时继续教育学分（2.0 CECs），并持有心肺复苏（CPR）证书；非北美地区对应自动体外除颤器（AED）。"},
+    {stem:"尽管教练保证不服用补充剂也能实现目标，但客户仍坚持要求服用，这种情况下教练该怎么办？",opts:["将客户推荐给健身俱乐部的销售团队","将客户推荐给注册营养师或医师","核实该健身房是否已经为这些产品的销售投保","停止为客户训练，直到客户同意停止使用这些产品为止"],ans:1,exp:"教练应帮助客户理解即使不服用补充剂也可实现目标，且补充剂可能有不良副作用。若客户仍坚持，教练应将其推荐给注册营养师或医师。"},
+    {stem:"客户提到参加周末网球比赛后肌肉酸痛，教练给予的最恰当回应是？",opts:["推荐客户服用抗炎类非处方药","建议客户在下次比赛前服用肌酸补充剂","对深层组织进行按摩处理，帮助缓解肌肉酸痛","与客户探讨对患处进行冷敷的正确方法"],ans:3,exp:"与客户探讨对患处进行冷敷的正确方法是恰当回应，其他选项都超出了ACE私教的执业范围。"}
+  ]
+};
+
+// ========== 第二章：动机与坚持原则 ==========
+const CH02 = {
+  id: "ch02", title: "第二章：动机与坚持原则",
+  questions: [
+    {stem:"对于刚开始参加运动方案的个体而言，最重要的因素是什么？",opts:["家庭和朋友的大力支持","运动设施的便利性","与运动有关的行为改变意愿度","与私人教练联络"],ans:2,exp:"我们不能强迫一个人去训练，他/她必须在一定程度上愿意做出改变。"},
+    {stem:"关于一个人参加运动方案的情况，哪种个人特质的预测结果最可靠？",opts:["体重","曾参加过运动方案","年龄","感知的时间障碍"],ans:1,exp:"运动史是个人特质中最重要且影响最大的一个变量，既往参与状况能有效预测当前参与度，不受性别、肥胖、冠心病等因素影响。"},
+    {stem:"人们中途退出一项运动方案时，最常见的借口是？",opts:["使用运动设施不太方便","缺乏支持","年龄太大，没法运动","没时间"],ans:3,exp:"没时间是人们中途退出运动方案中最常见的借口，很可能反映出对运动不感兴趣或不能全身心投入。"},
+    {stem:"为了确保客户坚持参加训练，私人教练最好采用下列哪种策略？",opts:["为客户设计运动方案，这样客户就只训练，而不会对运动本身想太多","通过内在动机因素对客户进行激励以提升其自我效能","鼓励客户独立安排运动方案，从而促进客户提升内在动机","主要通过指引（而非教育）建立自己的运动教学风格"],ans:2,exp:"通过鼓励客户掌控并参与运动方案、培养独立与自律素质，有助于促进客户建立内在动机。"},
+    {stem:"如果一个人很坚信自己能规律参加某项运动方案，则这个人最可能____________。",opts:["与运动有关的自我效能较高","正处于行为变化的犹豫不决阶段","自尊心较强","完全属于内在动机型个体"],ans:0,exp:"运动相关自我效能是对自己完成体育活动方案能力的信念，与动机呈正相关。"},
+    {stem:"下列哪一项措施提升客户坚持运动方案并实现运动目标的可能性最大？",opts:["设定一系列可实现的渐进式短期目标","帮助客户恪守绝不错过一次训练这一主要目标","设定许多目标，确保成功实现某些运动方案目标","只设定长期目标以促进客户坚持运动"],ans:0,exp:"客户能在每次训练中实现短期成功，设定切合实际的长期与短期目标，有助于坚持参加运动方案。"},
+    {stem:"强大的社会支持网络具有下列选项描述的优势，除了 ______________。",opts:["促进人们坚持参加运动方案","外在动机","防止运动者半途而废","内在动机"],ans:1,exp:"内在动机者在参加运动时享受运动本身带来的乐趣与体验，与社会支持网络的优势不属同类。"},
+    {stem:"下列哪种运动方案的退出率几乎是中等强度运动方案的两倍？",opts:["小组私教培训","剧烈（高强度）的运动方案","家庭私教培训","低强度运动方案"],ans:1,exp:"剧烈运动方案的退训率是中等强度方案的两倍。"},
+    {stem:"在监督式环境中运动，最可能与运动坚持水平无关的因素是？",opts:["教育","年龄","收入","性别"],ans:1,exp:"研究显示运动坚持度与教育背景、收入水平、性别等变量有关，但在受监督的训练方案中，年龄和坚持度似乎毫不相干。"},
+    {stem:"规律参加1年私教培训后，客户想尝试自己继续训练。接下来6个月内每周训练4-5天，每次1小时，说自己“喜欢来健身房，运动后感觉非常棒”。教练最可能将客户归类为？",opts:["外在动机型","自尊型","内在动机型","人格独立型"],ans:2,exp:"内在动机者往往积极参加运动，因为他们真正热爱运动。"},
+    {stem:"坚持的定义为：一种将行为赋予方向和目的的心理驱动力。",opts:["正确","错误"],ans:1,exp:"对健身教练而言，运动坚持是积极、自愿、主动地参加运动方案。激励才是将行为赋予方向和目的的心理驱动力。"},
+    {stem:"超过_____% 的人开始一项新的运动方案后都会在6个月内放弃。",opts:["25","50","60","75"],ans:1,exp:"超过50%的人开始一项新的运动方案后都会在6个月内放弃。"},
+    {stem:"身体活动的三种主要潜在决定因素不包括哪一项？",opts:["个人特质","身体特质","环境因素","体育活动因素"],ans:1,exp:"体育运动的潜在决定因素为：个人特质、环境因素、体育活动因素。"},
+    {stem:"总体倾向表明，下列哪种人群在不受监督的环境下最有可能会进行较高水平的体育运动？",opts:["老年人","男性","受教育年限较少者","处于较低层社会经济圈子的人群"],ans:1,exp:"男性比女性表现出更高的运动坚持度；年龄增长、教育程度低、收入低下等因素与运动水平低下有关。"},
+    {stem:"在预测某人对某项体育活动的坚持度时，最重要、影响最大的个人特质变量为哪一项？",opts:["运动史","肥胖程度","心血管疾病状况","社会支持系统"],ans:0,exp:"运动史是个人特质中最重要且影响最大的一个变量。"},
+    {stem:"_____ 是放弃运动方案最常见的借口",opts:["主观感觉时间不够","无法使用健身设施","缺乏社会支持","缺乏提高与进步"],ans:0,exp:"主观感觉时间不够是放弃运动方案最常见的借口，很可能反映出对运动不感兴趣或不能专注。"},
+    {stem:"下列哪种人群参加不受监督的体育活动训练方案的可能性最大？",opts:["积极性很高的初始运动者-开始参加剧烈的运动方案","发现自己健康不良并且医生鼓励其参加运动的人","肥胖男性，因为害怕家庭中常见的不良健康状况而积极运动","患有高血压的中年男性，他相信能掌控自己的健康"],ans:3,exp:"坚信能掌控自己健康状况的健康成年人一般都能参加不受监督的运动或活动。"},
+    {stem:"下列术语中，哪一项的定义为：相信自己有能力成功开始并坚持某种行为？",opts:["内在激励","自我效能","外在激励","心理控制源"],ans:1,exp:"自我效能的定义是：相信自己有能力成功开始并坚持某种行为。"},
+    {stem:"在按照SMART原则设定目标时，应避免以下哪种类型的目标？",opts:["长期目标","结果目标","消极的目标","成绩/表现目标"],ans:2,exp:"设定消极的目标会导致客户将行为重点放在避免上，而不是主动去完成某项目标。"},
+    {stem:"对于有训练失效风险的客户，最重要的应对方法是？",opts:["提高客户的自信心","建立社会支持网络","预先计划与准备","签订行为契约"],ans:2,exp:"对于有训练失效风险的客户，最重要的是教练应事先计划好并做好充分的准备，让客户为可能的训练失效做好重振旗鼓的准备。"}
+  ]
+};
+
+// ========== 第三章：沟通与教学技巧 ==========
+const CH03 = {
+  id: "ch03", title: "第三章：沟通与教学技巧",
+  questions: [
+    {stem:"在训练初期，下列哪种行为最可能有助于教练与客户建立默契？",opts:["目光频繁移开客户，防止紧盯着客户；坐姿良好，身体稍微前倾","说话嗓音柔和友好；身靠椅背，两前臂随意交叉于胸前","直接、友好的眼神接触；在训练课程中始终保持微笑与热情的态度","言语自信；说话时使用流畅的手势语，倾听时双手要保持相对静止"],ans:3,exp:"坚定自信的语调传递专业素养；说话使用放松流畅的手势语且聆听时双手相对静止，会令他人感觉最自在。"},
+    {stem:"下列哪一项描述与调查阶段的有效倾听最相关？",opts:["向客户提封闭式问题，以鼓励客户分享相关信息","仔细聆听客户的同时，根据聆听者自己的信念对信息进行重建","向客户提问，以鼓励的语言应对客户的回答并进一步提出开放性问题","当客户在说话时，教练做详细的记录"],ans:2,exp:"有效倾听就是私人教练仔细认真地聆听客户、产生同感、带着开放的心态思考问题。"},
+    {stem:"一位已训练几个月的客户告诉教练，自己的一位亲戚病得很严重。教练最适当的反应是？",opts:["“真不幸！我简直无法想象你如何承受这一点”","“你考虑过心理咨询吗？我有些客户通过心理咨询取得了巨大的成功”","“怎么回事？”","“太不幸了！请告诉我还有哪些心事”"],ans:0,exp:"客户分享伤感的事时，教练应简单作出应答，如“我听了很难过”“我简直无法想象你如何承受这一点”。"},
+    {stem:"下列哪一项描述最能体现SMART目标？",opts:["“我会通过优化饮食与运动来改善我的胆固醇与血压水平”","“四个月内我会每周跑4天，将跑步时间从10分钟逐渐延长至40分钟跑5公里”","“我会每周运动7天，为2个月后的夏威夷度假减重20磅（9公斤）”","“我每周会尝试一种新的团体训练课，以防对运动产生厌倦”"],ans:1,exp:"SMART目标必须具备明确性、可度量性、可实现性、相关性与时限性等特点，目标要设定大致时间表且切合实际。"},
+    {stem:"下列哪一项措施能最有效地帮助客户坚持参加运动方案？",opts:["频繁改变运动方案，以防客户产生厌倦","做运动日志，从而帮助客户进行自我监督","对每次训练执行奖励制度","每周对客户进行体适能评估以监督进步情况"],ans:1,exp:"研究表明，自我监督是支持行为改变（包括运动方案坚持与减重）最有效的方法。"},
+    {stem:"教客户新运动的最有效方法是？",opts:["向客户示范如何执行该运动，然后让客户执行该运动并进行监督，从而为客户树立良好的榜样","向客户解释该项运动并进行示范，然后让客户执行该运动并进行反馈","使用运动图片，同时向客户解释，然后让客户执行该运动并进行反馈","让客户执行该运动，同时教练进行口授，从而指导该客户规范地执行这项运动"],ans:1,exp:"“言传、身教、力行”方法：教练先解释再示范，然后客户执行，教练观察并随时提供反馈。"},
+    {stem:"一位客户开始执行最基本的自重深蹲动作，动作相当规范，现在希望获得更多具体反馈以进一步改善蹲动作技巧。该客户处于哪个学习阶段？",opts:["动作联结阶段","认知阶段","自主运动阶段","独立阶段"],ans:0,exp:"在动作联结阶段，客户开始掌握基本运动技能并准备好接受具体反馈以调整、提高。"},
+    {stem:"在初步调查阶段，下列哪一项提问的重要性最低？",opts:["“你能否描述此前的运动经历？”","“你分别喜欢和不喜欢哪种运动?”","“你此前停止运动的原因是什么？”","“你属于哪种学习者-视觉型、动觉型还是听觉型？”"],ans:3,exp:"学习风格通常在行动阶段通过观察客户学习情况和语言线索识别，而非调查阶段直接询问。"},
+    {stem:"一名客户提到自己更喜欢触觉反馈并且在运动中最好有人监督。该客户最可能属于哪种学习方式？",opts:["视觉型","动作联结型","动觉型","认知型"],ans:2,exp:"动觉型学习者偏向于在他人监督下亲自实践并诉说关于动作的“亲身感受”。"},
+    {stem:"与客户进行动机式晤谈时，不推荐采用的策略是哪一项？",opts:["提出试探性问题","教练与客户相互依赖","沟通对话时要维持友好的气氛","鼓励客户独立思考，要有自己的想法"],ans:1,exp:"私人教练应努力帮助客户建立自信心，识别能获得成功的领域，而不是让教练与客户相互依赖。"},
+    {stem:"下列客户-教练关系的四个阶段划分，顺序正确的一项是？",opts:["调查, 计划, 行动, 默契建立","默契建立, 调查, 计划, 行动","默契建立, 计划, 调查, 行动","计划, 默契建立, 调查, 行动"],ans:1,exp:"客户-教练关系四个阶段的正确顺序为：默契建立阶段, 调查阶段, 计划阶段与行动阶段。"},
+    {stem:"与新客户交谈时，响亮、紧绷的嗓音能传递自信和专业精神。",opts:["正确","错误"],ans:1,exp:"响亮、紧绷的嗓音会令听者神经紧张。教练应尝试坚定自信的嗓音，给人留下专业印象。"},
+    {stem:"教练的下列哪种身体姿势在客户看来可能具有攻击性？",opts:["站姿，全身伸展","坐姿，身体稍微前倾","站姿，双手叉腰","双腿交叠地坐在桌子后面"],ans:2,exp:"肢体伸展、平衡良好的站姿传达自信，而双手叉腰姿势则可视为有攻击性。"},
+    {stem:"教练在与客户沟通的过程中尝试通过重申训练要点与感受来澄清某些问题点，请问该教练采用的有效倾听方法是？",opts:["鼓励","释义","回想","总结"],ans:2,exp:"回想技巧是通过重申训练要点与感受来澄清问题点，有助于将谈话向积极方向推进。"},
+    {stem:"“我要每周进行两次全身抗阻训练”属于哪种目标的例子？",opts:["SMART目标","过程目标","成果目标","时限性目标"],ans:1,exp:"过程目标是指客户需要具体执行的事物，与要实现的最终目标不是一回事，容易追溯且能带来短期鼓励。"},
+    {stem:"动机式晤谈法最常在客户-教练关系的哪个阶段中使用？",opts:["默契建立","调查","计划","行动"],ans:2,exp:"动机式晤谈是通过谈话了解人们动机而促进行为改变的方法，目的是使客户意识到缺乏运动的生活方式会带来健康问题，多在计划阶段使用。"},
+    {stem:"采用恰当的措辞进行反馈包含三个步骤，最正确的步骤顺序是哪一项？",opts:["纠正错误；对良好的行为或结果进行强化；激励客户继续练习和改善","对良好的行为或结果进行强化；纠正错误；激励客户继续练习和改善","激励客户继续练习和改善；对良好的行为或结果进行强化；纠正错误","纠正错误；激励客户继续练习和改善；对良好的行为或结果进行强化"],ans:1,exp:"反馈需要：1)强化良好行为或结果 2)纠正错误 3)激励客户继续练习和改善。纠正错误应介于强化和激励之间执行。"},
+    {stem:"客户已经开始学习一些基本动作并且对教练的反馈做好了准备，请问该客户处于运动学习的哪个阶段？",opts:["认知定向","动作联结","自主运动","情感认同"],ans:1,exp:"在动作联结阶段，客户开始掌握基本运动技能，教练应提供更多针对性反馈。"},
+    {stem:"在运动学习的哪个阶段，客户能高效、自然地执行运动技能，教练可以减少教育同时要增加监督？",opts:["认知定向","动作联结","自主运动","情感认同"],ans:2,exp:"在自主运动阶段，客户能有效自然地完成运动技能，教练工作重心从教学逐渐转向监督。"}
+  ]
+};
+
+// ========== 第四章：行为改变与健康心理学基础 ==========
+const CH04 = {
+  id: "ch04", title: "第四章：行为改变与健康心理学基础",
+  questions: [
+    {stem:"与客户一起开展运动训练几个月后，教练注意到客户的自我效能和能力水平都有所提高。这种情况下，教练应如何调整对客户外部反馈的量？",opts:["教练应增加外部反馈的量","反馈的量应保持不变","教练应逐渐减少外部反馈的量","教练应立即停止对客户的外部反馈"],ans:2,exp:"随着客户自我效能和运动能力的提升，教练应逐渐减少外部反馈，让客户增加自我反馈。"},
+    {stem:"在什么情况下应该对行为契约或书面协议进行修订或更新？",opts:["当客户故态萌发，恢复至不运动的状态时","当客户完成他最后一次购买的训练课程时","绝不要修订或更新；行为契约和书面协议应为永久性的文件","当运动目标已经实现或者运动方案有变动时"],ans:3,exp:"每当运动目标已实现或运动方案有变动时，行为契约都要相应进行调整与修改。"},
+    {stem:"一名客户每天将健身背包放在车的前排座位，以此提醒自己下班后不要忘记锻炼。该客户使用的行为变化策略是？",opts:["刺激控制","直观学习","塑型","操作性条件作用"],ans:0,exp:"刺激控制是通过对环境适应，提高实现健康行为的可能性，如车里放健身器具包。"},
+    {stem:"下列哪一项是指某种行为引起的正面刺激消除后发生的情况，会降低某种行为将来再次发生的可能性？",opts:["正面强化","负面强化","消失","惩罚"],ans:2,exp:"消失是指某种行为引起的正面刺激消除后发生的情况，会降低该行为将来再次发生的可能性。"},
+    {stem:"_______________ 是指人们接受和/或维持某运动项目时对其利与弊的权衡。",opts:["变化过程","自我效能","操作性条件作用","决策权衡"],ans:3,exp:"跨理论模型的第四个要素是决策权衡，指人们接受和/或维持某运动项目时对其利与弊的权衡。"},
+    {stem:"对于处于无准备阶段的客户而言，下列哪一项干预策略最不合适？",opts:["将不活动变成一个相对性的问题","向客户提供不运动的健康风险以及运动的健康益处","通过多种途径收集并向客户提供信息（如新闻、海报、宣传册与一般性的健康宣传材料）","向客户介绍不同类型的运动或者活动项目，借以找到客户感兴趣的运动项目"],ans:3,exp:"这种干预策略最适合处于准备阶段的客户，而非无准备阶段的客户。"},
+    {stem:"一名潜在客户告诉教练：自己在过去两个月里每周锻炼几次，每次训练步行两英里，且已在健身房运动，因为他最终决定接受系统性的训练。该客户处于行为变化的哪个阶段？",opts:["犹豫不决","准备","行动","维持"],ans:1,exp:"准备阶段的特点是做了一些基本活动，心理和身体上已做好锻炼准备，但未能持之以恒。"},
+    {stem:"自我效能低下者最倾向于选择没有什么挑战难度、易于实现的任务。",opts:["正确","错误"],ans:0,exp:"自我效能低的人多半会选择挑战性不高的任务，多次遭遇挫折后多半会放弃或中途退出。"},
+    {stem:"哪种行为理论模型预测人们在觉察到健康受到威胁时会主动接受健康行为？",opts:["行为变化的跨理论模型","健康信念模型","自我效能模型","变化阶段模型"],ans:1,exp:"健康信念模型预测人们在（1）觉察到健康受到威胁（2）权衡接受该行为后的利与弊时会主动接受健康行为。"},
+    {stem:"下列哪一项最可能提升客户的意志力？",opts:["在一天结束的时候做出改变行为的重要决定","设定许多大的目标以便全面“大修”自己的生活方式","为自控能力薄弱的场合提前做准备","启动行为改变计划，同时申请新工作并搬迁住所"],ans:2,exp:"由于大多数人的毅力非常有限，客户应具备保持自身毅力的策略，为自控能力薄弱的场合提前做准备。"},
+    {stem:"下列哪种策略能最有效促进客户长期坚持运动？",opts:["记录客户的想法、体验感受与情绪","拍摄客户的运动，以便比较客户在哪方面取得了进步","在日历上提醒自己要运动","每次训练后要对心率监测的结果进行分析"],ans:0,exp:"自我监督有助于客户记录训练方案的进展状况，帮助识别阻碍成功的潜在因素，有助于制定长期坚持运动的方案。"},
+    {stem:"客户从家里往返健身房时会选择最直的路径，这个事例属于哪个过程？",opts:["操作性条件作用","刺激控制","假想经历","塑造"],ans:1,exp:"刺激控制是指通过对环境适应，提高实现健康行为的可能性，选择最直路径也属于此类。"},
+    {stem:"下列哪一项是使用强化手段帮助客户从四分之一箭步蹲进阶至标准箭步蹲并增加训练阻力的最好的例子？",opts:["塑造","操作性条件作用","前因"],ans:0,exp:"塑造是通过使用强化手段逐步实现目标行为的过程，通过正面强化按适当进度持续增加需求。"},
+    {stem:"根据操作性条件作用的原理，为了确保将来产生预期的结果，私人教练最好采用下列哪种方法？",opts:["惩罚","正面强化","停止正面刺激","负面强化"],ans:1,exp:"正面强化能够使行为得到强化，采用强化手段意味着积极健康的行为将来再次发生的可能性会增加。"},
+    {stem:"为了促进客户坚持运动，私人教练采取下列哪些策略能取得最佳的效果？",opts:["只在评估时才对客户的目标重新回顾，这样反映客户取得较大的进步","对每位客户的运动方案做出主要决定，这样客户能专心运动","帮助客户从外在反馈主导型向内在反馈主导型转变","为客户记录运动进步情况，这样客户不用自己亲自监督进展状况，能够专注于运动"],ans:2,exp:"随着效能与能力建立后，教练应逐渐减少外在反馈，鼓励客户自己进行内在反馈。"},
+    {stem:"一位新客户说自己在生双胞胎之前曾参加当地10公里跑比赛和半程马拉松赛。自两个孩子两年前出生后就一直没有积极运动，现在孩子每周3天上日托班，自己开始跑步，最终目标是跑完马拉松全程。客户从孕前至遇到教练这一阶段，最可能处于行为变化的哪个阶段？",opts:["行动、无准备、行动","维持、犹豫不决、行动","行动、维持、准备","维持、犹豫不决、准备"],ans:3,exp:"客户开始时处于维持阶段（规律运动超过6个月），生完小孩后回到犹豫不决阶段，现在孩子在日托班开始运动，处于准备阶段。"},
+    {stem:"对与运动有关的自我效能影响最大的因素？",opts:["有说服力的口头反馈","情感状态与情绪","过往运动表现","替代性运动经验"],ans:2,exp:"自我效能最重要、最强大的预测指标就是过往运动表现。"},
+    {stem:"一位男士在飞机上向你询问了很多关于运动、营养和健康方面的问题。他说自己目前不运动，不过正在考虑去健身房运动，希望你给些推荐和建议。该男士最可能处于哪个行为变化阶段？",opts:["无准备阶段","犹豫不决阶段","准备阶段","行动阶段"],ans:1,exp:"处于犹豫不决阶段的人们仍然没开始运动，但开始意识到运动的重要性并已了解不运动对健康的影响。"},
+    {stem:"教练了解到客户想规律运动是因为最近体检发现自己处于高血压前期，血脂异常并有心血管疾病的家族史。下列哪种因素与客户行为改变的关联性最大？",opts:["决策权衡","觉察到健康问题的严重性","操作性条件作用","刺激控制"],ans:1,exp:"感知严重性是健康信念模型的组成成分，指人们感觉罹患某种疾病或不治疗疾病会产生的严重后果，后果越严重接受健康行为的可能性越大。"}
+  ]
+};
+
+// ========== 第五章：理解ACE IFT训练模型 ==========
+const CH05 = {
+  id: "ch05", title: "第五章：理解ACE IFT训练模型",
+  questions: [
+    {stem:"ACE IFT模型的基础是？",opts:["改善健康","功能性体适能","建立默契","心肺适能"],ans:2,exp:"ACE IFT模型建立在默契的基础之上。建立默契有助于开放式沟通、建立信任并使客户渴望参加运动方案。"},
+    {stem:"根据ACE IFT模型，客户在开始一项运动方案前必须要完成哪些评估？",opts:["评估姿势、功能性动作、肌力与肌耐力","收集健康史资料，以识别运动禁忌及转介需要","使用亚极量谈话试验确定VT1强度时的心率，从而评估客户的心肺适能水平","测量身体成分与腰臀比"],ans:1,exp:"教练与客户建立默契关系后，应收集健康史信息，判断客户是否有运动禁忌或是否需要转介给医生。"},
+    {stem:"对某些客户而言，下列哪一项最有可能阻碍与健身有关的行为改变？",opts:["识别客户改变行为的意愿度","为客户在运动早期营造积极的运动体验","按照客户的人格特质执行不同的训练策略","对客户的体适能与身体成分进行初步、全面的评估"],ans:3,exp:"对于体形较差的客户，早期进行完整的评估反而不利，会强化客户负面自我形象与信念。"},
+    {stem:"动作训练期着重训练的五种主要动作分别是？",opts:["蹲、箭步蹲、摇摆、投掷与拱背动作","跳跃、单脚跳、推、拉与拱背动作","蹲、箭步蹲、推、拉与旋转动作","跳跃、单脚跳、摇摆、投掷与旋转动作"],ans:2,exp:"弯腰-提起动作（蹲）、单腿动作（箭步蹲）、推、拉、旋转是五种基本动作模式，构成动作训练期的基础。"},
+    {stem:"如果某人腰椎前弯、髋关节与肩关节活动度不足，则该客户在ACE IFT模型的功能性训练与抗阻训练的哪一期应每周进行4天的抗阻训练？",opts:["1期：稳定性与灵活性训练","2期：动作训练","3期：负荷训练","4期：运动表现训练"],ans:0,exp:"该客户存在姿势问题，首先要通过稳定性与灵活性训练予以矫正，然后再进行抗阻训练。"},
+    {stem:"力量训练、健美运动与肌耐力训练都属于ACE IFT模型中功能性动作训练与抗阻训练的哪一期？",opts:["1期：稳定性与灵活性训练","2期：动作训练","3期：负荷训练","4期：运动表现训练"],ans:2,exp:"3期：负荷训练期主要是增加外力或外界负荷，重点是训练肌肉的发力能力，包括体形、肌力、肌肥大、肌耐力等目标。"},
+    {stem:"下列哪位客户最适合进行包括速度、敏捷性、快速启动动作、反应性训练的运动表现训练？",opts:["45岁男性竞技网球运动员","33岁女性马拉松运动员","27岁男性健美运动员","52岁女性娱乐性高尔夫球手"],ans:0,exp:"4期训练重点是提高速度、敏捷性、动作启动速度、反应性与爆发力，适用于有竞技目标或运动表现目标的个体。"},
+    {stem:"无竞技目标且规律参加团体运动的个体心肺训练应被划分至ACE IFT模型中心肺训练的哪个训练期？",opts:["1期：有氧基础训练","2期：有氧效率训练","3期：无氧耐力训练","4期：无氧爆发力训练"],ans:1,exp:"2期有氧效率训练旨在通过增加训练时间、频率并引入有氧间歇训练提升有氧效率，是典型团体健身方案的训练特征。"},
+    {stem:"私人教练可利用谈话试验作为运动强度的上限来判断客户的运动强度是否低于下列哪种心肺运动标记物对应的",opts:["V̇O2max","第2通气阈（VT2）","无氧阈","第1通气阈（VT1）"],ans:3,exp:"教练可进行亚极量谈话试验以确定客户在VT1运动强度时的心率，VT1大约相当于RPE 4-5级。"},
+    {stem:"按照ACE IFT训练模型，功能性动作训练与抗阻训练的四个训练阶段顺序：稳定性与灵活性训练、动作训练、负荷训练、运动成绩训练，此顺序恰当。",opts:["正确","错误"],ans:0,exp:"功能性动作训练与抗阻训练的正确分期为：稳定性与灵活性训练、动作训练、负荷训练与运动成绩训练。"},
+    {stem:"按照ACE IFT训练模式开展功能性动作训练与抗阻训练，请问在哪个训练阶段的训练重点是将外加阻力融入功能性动作模式中？",opts:["稳定性与灵活性训练","动作训练","负荷训练","运动成绩训练"],ans:2,exp:"3期或负荷训练期的重点是将外加阻力融入至功能性动作中去，应用在耐力、肌肥大与力量训练中。"},
+    {stem:"处于功能性动作和抗阻训练的负荷训练期的客户，相当于心肺训练的无氧耐力训练期。",opts:["正确","错误"],ans:1,exp:"尽管两个训练期都处于各自分期的第3阶段，但客户会按自身独特需求从一个训练期迈入下一训练期，可能在两种分期中处于不同阶段。"},
+    {stem:"在新客户开始稳定性和灵活性训练方案前，教练应对其进行肌力和耐力评估。",opts:["正确","错误"],ans:1,exp:"处于该训练阶段的客户不需要进行肌力和肌耐力评估。评估应安排在早期，基本评估项目包括姿势、平衡能力、动作与关节活动度。"},
+    {stem:"在ACE IFT模型下进行功能性动作与抗阻训练，客户处于哪个训练期时需要引入肌力和肌耐力评估？",opts:["1期","2期","3期","4期"],ans:2,exp:"在3期即负荷训练期会引入肌力与肌耐力评估，有助于运动方案设计与运动进阶的量化安排。"},
+    {stem:"在心肺训练的有氧基础训练阶段，不建议对客户进行评估。",opts:["正确","错误"],ans:0,exp:"一般不建议对处于有氧基础训练阶段的客户进行评估，因为该阶段客户体能一般较低，完成评估可能有困难。"},
+    {stem:"在客户的心肺训练2期引入间歇式训练的主要目标是哪一项？",opts:["通过增大训练强度来提升有氧耐力水平","增加运动方案的花样以避免因枯燥乏味而厌烦训练","帮助客户将运动强度提升至高于第一通气阈","通过改善客户的心情来提升客户对运动方案的坚持度"],ans:0,exp:"间歇训练的目标是通过将运动强度提升至VT1来提高客户的有氧耐力水平，并提升利用脂肪为能量来源的能力。"},
+    {stem:"一名客户正在采用ACE IFT训练模式进行心肺训练并处于第3个训练阶段，目前客户以通气阈为训练强度标准采用3区训练模型开展训练。这一阶段客户在VT1和VT2强度下训练的时间比约为？",opts:["大于80%","70-80%","10-20%","小于10%"],ans:3,exp:"完整心肺运动方案：1区（≤VT1）70-80%训练时间，2区（VT1~VT2）<10%训练时间，3区（≥VT2）10-20%训练时间。"},
+    {stem:"客户采用ACE IFT训练模式进行无氧爆发力训练，处于该训练期的训练目标与_________有关。",opts:["需要巨大耐力的长时间、中等强度运动项目","训练初期要求恒定速度与强度的长时间运动项目","在长时间的运动赛事过程中需要短时间、高强度的动作","短时间、高强度运动赛事中需要的爆发力，但很少需要耐力"],ans:2,exp:"处于无氧爆发力训练期的客户目标通常为持续时间长的耐力性比赛，比赛过程中需要执行短时间、高强度的动作。"},
+    {stem:"与特殊人群的客户一起开展训练工作时，最重要的目标是什么？",opts:["让客户在训练初期获得正面积极的运动体验，从而促使他们轻易获得初期的成功","推动客户通过ACE IFT模型下的各个训练期，最终目标是提高客户的体适能水平与运动成绩","进入阻力训练期，这一期会引入外加阻力负荷，这样能提高客户在日常活动中的运动表现","教育客户每天坚持训练很重要，即使生病或身体不适时也要坚持运动"],ans:0,exp:"最重要的目标是让客户在训练初期获得正面积极的运动体验，从而促使他们轻易获得初期的成功。"},
+    {stem:"心肺运动在2区的的训练强度是？",opts:["低于VT1","=VT1","从VT1至临界低于VT2","≥VT2"],ans:2,exp:"心肺运动2区的训练强度为从VT1至临界低于VT2。"}
+  ]
+};
+
+// ========== 第六章：建立默契与初步调查阶段 ==========
+const CH06 = {
+  id: "ch06", title: "第六章：建立默契与初步调查阶段",
+  questions: [
+    {stem:"提高客户动机水平并促进客户长期坚持运动，是在客户-教练关系的哪个阶段需要执行的策略？",opts:["默契建立阶段","调查阶段","计划阶段","行动阶段"],ans:3,exp:"在行动阶段，成功执行全部运动方案内容，教练根据需要提供适当指引、反馈并安排进阶，包括提高动机促进长期坚持的策略。"},
+    {stem:"在成功的人际关系中，“无论别人具有怎样的独特性，都能尊重他人”这一基本属性的名称是？",opts:["共感","热情","真诚","诚实"],ans:1,exp:"无条件地对他人表现出积极的关怀和尊重，无论对谁，都要让对方有安全感和认同感，这是热情。"},
+    {stem:"“能否告知你出现下背酸痛时周围环境的详细情况”属于那种面谈技巧的例子？",opts:["反思","对抗","传递信息","试探"],ans:3,exp:"试探是询问其他信息的一种策略，如“请详细说明服药情况”。"},
+    {stem:"客户信息：男，47岁，母亲高血压，父亲59岁冠脉搭桥，20年前戒烟，每天遛狗1-2次每次10分钟，BMI 29，血压132/86，总胆固醇216，LDL 138，HDL 48，空腹血糖94，目标减重20磅。按照ACSM风险因素阈值，该客户罹患动脉粥样硬化性心血管疾病的“总分”为？",opts:["+1","+2","+3","+4"],ans:2,exp:"客户总得分为3分：年龄（男性）≥45岁+1；静态生活方式+1；LDL胆固醇≥130毫克/分升+1。"},
+    {stem:"（承上题）按照ACSM风险分级标准，该客户的风险等级为？",opts:["低危","中危","高危","极高危"],ans:1,exp:"中危表明个体存在着2种或2种以上无症状风险因素。"},
+    {stem:"（承上题）基于该客户的风险等级，对于该客户的运动测试，下列推荐正确的是？",opts:["在没有医生监督的情况下，教练可执行亚极量体适能测试","进行中等强度运动前需要接受体检","进行所有的亚极量与极量体适能测试时都需要医生在场监督","启动中等强度的运动方案前，客户要进行分级运动测试"],ans:0,exp:"在无医生现场监督的情况下，中危客户可执行亚极量体适能测试。"},
+    {stem:"客户信息：女，39岁，父亲I型糖尿病，母亲II型糖尿病，从不吸烟，过去6个月每周3-4天游泳每次30-45分钟，BMI 31，血压128/82，总胆固醇224，LDL 122，HDL 64，空腹血糖95，目标减重30磅。按照ACSM风险因素阈值，该客户罹患动脉粥样硬化性心血管疾病的“总分”为？",opts:["0","+1","+2","+3"],ans:1,exp:"客户总得分为1分：BMI≥30公斤/m²得+1分，总血清胆固醇≥200毫克/分升得+1分，HDL胆固醇≥60毫克/分升得-1分。"},
+    {stem:"（承上题）按照该客户所处的风险等级，关于心肺运动方案的强度、是否需要体检、是否需要进行分级运动试验，下列推荐正确的是？",opts:["教练可为客户设计中等强度的运动方案，如果客户要进行较剧烈的运动，则要推荐客户接受体检与运动测试","客户不需要进行体检或运动测试，教练可直接为其设计中等至高强度的运动方案","进行中等强度的运动前，推荐客户进行运动测试；进行高强度剧烈运动前，则推荐客户进行体检与运动测试","开始运动方案前要接受体检并进行分级运动试验"],ans:1,exp:"低危客户在参加中等至高强度（剧烈）运动前不需要进行体检或接受运动测试。"},
+    {stem:"你有一名57岁的女性新客户，非常热爱高尔夫球、网球与壁球运动。健康风险评估结果仅显示一项阳性风险因素（年龄），此外该客户心脏有杂音。根据ACSM风险分级标准，该客户的风险等级为？",opts:["低危","中危","高危","极高危"],ans:2,exp:"该客户出现已知的体征与症状（心杂音），因此自动划属为高危个体。"},
+    {stem:"客户在哪种表格中签字承认自己已接受告知并了解与积极运动有关的风险？",opts:["责任豁免协议","体检健康证明","运动史与运动态度问卷","知情同意书"],ans:3,exp:"当客户签署知情同意书时，就表明自己已经具体了解与运动有关的风险。"},
+    {stem:"下列哪位客户在参加教练设计的运动方案前，不需要医生开具健康证明？",opts:["一名42岁女客户，腰椎前弯","一名54岁男客户，患有II型糖尿病","一名61岁女客户，目前在服用钙通道阻滞剂","一名35岁男客户，患有哮喘"],ans:0,exp:"如果客户没有运动禁忌，但出现腰椎前弯，则该客户可以与私人教练按照健身方案进行训练。"},
+    {stem:"除非医生许可，下列哪种情况一般属于举重运动的禁忌？",opts:["糖尿病","疝","妊娠","感染"],ans:1,exp:"疝是举重类运动的相对禁忌，除非经医生许可。有疝病史的客户，教练教他们正确呼吸与举重技巧非常重要。"},
+    {stem:"与潜在客户会面的第一要务就是收集客户与运动目标有关的信息。",opts:["正确","错误"],ans:1,exp:"与潜在客户会面的首要目标是与客户建立良好的个人关系；收集运动目标信息是次要的。"},
+    {stem:"下列不属于训练前筛查的主要目的的一项是？",opts:["识别判断已知疾病是否存在","识别客户处于行为变化的哪个阶段","识别客户的运动禁忌症","识别有特殊医学状况的客户，有些客户应该在医学监督下参加运动训练"],ans:1,exp:"训前身体筛查的原因是识别心血管、肺部、代谢性疾病或体征症状、医疗禁忌症、运动前疾病风险，需要临床运动试验等，而非识别行为变化阶段。"},
+    {stem:"一名客户对PAR-Q调查问卷中以下两个问题都回答了“是”：目前你的医生是否为你的血压或心脏问题开了处方药？你上个月运动时是否出现过胸痛状况？教练应采取的最合适的应对措施是？",opts:["让客户循序渐进地参加体育活动训练","让客户开始运动前进行体适能评估","在开始运动前或进行体适能评估前先与医生沟通","先不急着参加体育活动，等身体感觉好了再开始运动"],ans:2,exp:"PAR-Q问卷上如果客户回答“是”的选项为1个或以上，就必须获得医生许可才能进行体适能评估或运动。"},
+    {stem:"下列哪一项属于动脉粥样硬化性心血管疾病的正面风险因素？",opts:["体重指数为28 kg/m2","高密度脂蛋白胆固醇为66 mg/dL","血清胆固醇为195 mg/dL","收缩压为143 mmHg"],ans:3,exp:"至少两次在不同场合测量证实收缩压>140mmHg和/或舒张压>90mmHg，则考虑为动脉粥样硬化性心血管疾病的正面风险因素。"},
+    {stem:"损伤发生后多久不活动，损伤部位周围的肌肉便出现废用性萎缩？",opts:["两小时","两天","两周","两个月"],ans:1,exp:"损伤发生后两天不活动，损伤部位周围的肌肉便开始出现废用性萎缩。"},
+    {stem:"下列哪种药物可引起计量相关的的安静心率、运动中心率和最大心率下降？",opts:["β阻滞剂","抗组胺剂","抗抑郁剂","利尿剂"],ans:0,exp:"β阻滞剂能在全身抑制儿茶酚胺类的作用并降低安静心率、运动中心率和最大心率值。"},
+    {stem:"下列哪一选项应成为每名客户训前筛查必须包含的内容？",opts:["身体成分测试","动作筛查","静态姿势评估","健康风险评估"],ans:3,exp:"不论选择的评估项目，训前筛查内容必须包含健康风险评估项目。"},
+    {stem:"_______________ 用于表征：在心动周期的充盈期血液在动脉血管对管壁施加的压力值。",opts:["安静血压","最大血压","收缩压","舒张压"],ans:3,exp:"舒张压表示在心动周期的充盈期血液在动脉血管对管壁施加的压力值，是心动周期内的最小压力值。"},
+    {stem:"客户的血压读数为124/78 mmHg，教练应将此客户的血压划分为？",opts:["正常","前驱高血压","1期高血压","2期高血压"],ans:1,exp:"收缩压为120-139mmHg或舒张压为80-89mmHg，应划为前驱高血压。"},
+    {stem:"下列关于自感用力度（RPE）评分表的叙述，最准确的一项是？",opts:["使用自感用力度评分表时，男性常常会低估用力程度，而女性往往会高估用力程度","使用0-10级的评分表时, RPE 6级对应的心率值为60 bpm","使用6-20级的评分表时, RPE 11级对应的用力程度可描述为“有些困难”","大部分体能欠充沛的人使用自感用力度评分表都会感觉比较容易并且与自己的直觉判断一致"],ans:0,exp:"0-10级评分与心率值并无直接对应关系，RPE 11级可描述为“相当轻”，且大部分体能欠充沛者都会觉得RPE表比较难。"}
+  ]
+};
+// ========== 第七章：功能性评估 ==========
+const CH07 = {
+  id: "ch07", title: "第七章：功能性评估：姿势、动作、核心、平衡能力与柔韧性",
+  questions: [
+    {stem:"教练为新手客户设计运动方案时，最好先重点进行肌力训练，然后再将重点转移至提高客户的身体姿势。",opts:["正确","错误"],ans:1,exp:"考虑到许多人身体姿势不良，教练训练初期的重点应放在恢复稳定性和灵活性，遵守“先矫正后强化”的训练原则。"},
+    {stem:"下列观察描述中，不被记录为姿势偏差的选项是？",opts:["掌心向后","骨盆前上部分向前下方旋转","颧骨与锁骨对齐","距下关节内旋"],ans:2,exp:"身体姿势良好时，颧骨应与锁骨对齐，这是正常姿势而非偏差。"},
+    {stem:"Apley摸背试验通常与下列哪对试验一起进行？",opts:["闭目直立试验与单腿站立平衡能力试验","托马斯实验与被动直腿抬高试验","肩关节屈伸试验与肱骨的内旋-外旋试验","袖带测血压试验与肌肉-长度试验"],ans:2,exp:"摸背试验涉及三个运动面同时进行多个关节动作，应与肩关节屈伸试验与内旋-外旋试验等单平面动作一同做来察明动作受限原因。"},
+    {stem:"进行托马斯试验时，教练观察到客户能将其右腿下放至桌面上方10度位置并屈膝约90度。教练将对该试验的测试结果记录为？",opts:["右腿的关节活动度正常","右腿股直肌过紧","腰椎的关节活动受限","右侧髂腰肌过紧"],ans:3,exp:"如果大腿背面不能完全平贴桌面，表明髂腰肌过于紧张，会阻碍髋关节向后旋转并抑制大腿接触桌面。"},
+    {stem:"进行稳定性与灵活性训练的目的是什么？",opts:["执行恢复性运动以改善功能与姿势评估时发现的姿势与动作代偿","教客户正确的蹲、箭步蹲、推、拉与旋转动作模式","为身体进行专项体能训练与运动表现训练做好准备","受伤或术后进行康复性运动以恢复身体功能"],ans:0,exp:"1期：稳定性与灵活性训练旨在改善姿势与动作代偿，从而恢复良好的关节对线与肌肉平衡。"},
+    {stem:"下列哪一项姿势偏差表明客户肱骨内旋并且（或）肩胛骨前引（前伸）？",opts:["前面观：掌心向后","后面观：可见翼状肩胛姿势","侧面观：上背过度弯曲","前面观：胸骨与铅垂线不在一条直线上"],ans:0,exp:"双手垂于身体两侧时，如果掌心向后，通常表明肱骨内旋并且（或）肩胛骨前引。"},
+    {stem:"在推肩稳定性筛查时发现翼状肩胛，最有可能是因为_________。",opts:["核心与下背肌群薄弱","肩胛胸壁关节不稳定","胸椎弯曲","前锯肌发达"],ans:1,exp:"最可能是因为肩胛旁肌（前锯肌、斜方肌、肩胛提肌、菱形肌）无法将肩胛骨稳定在胸廓处。"},
+    {stem:"在弯腰-提起动作筛查的过程中，哪一选项的观察结果表明客户的跖屈肌过紧？",opts:["股后肌群接触小腿肌","下蹲动作靠膝关节动作启动","拇趾向上伸展","足跟抬离地面"],ans:3,exp:"足跟无法始终接触地板，可能表明小腿肌群（跖屈肌）过于紧张。"},
+    {stem:"在对客户进行评估的过程中，教练发现哪一选项描述的现象时应推荐客户就医？",opts:["在姿势筛查时发现客户脊柱前弯","足部缺乏稳定性，伴足踝内陷","在弯腰-提起动作筛查时出现疼痛","在姿势筛查时发现客户存在着头部前伸姿势"],ans:2,exp:"如果客户在动作筛查过程中出现疼痛，应停止筛查并将客户转介给专业医疗保健人员评价疼痛部位。"},
+    {stem:"在被动直腿抬高试验中，下列哪一项观察结果表明股后肌群的长度正常？",opts:["抬起的腿活动范围达到70度","抬起的腿动作活动超过70度后骨盆开始向后倾斜","抬起的腿动作极限接近90度","当抬起的腿动作接近80度时，对侧腿抬离垫面"],ans:2,exp:"在被动直腿抬高试验中，当抬起的腿活动范围≥80度后骨盆开始向后旋转，表明股后肌群的长度正常。"},
+    {stem:"下列哪一项属于与姿势偏差有关的不可矫正性因素？",opts:["单侧优势","结构偏差","缺乏关节稳定性","缺乏关节灵活性"],ans:1,exp:"不可矫正性因素包括：先天性病例状况、某些病理性因素、结构差异、某些外伤。其他选项属于可矫正性因素。"},
+    {stem:"让客户执行肩关节外旋与内旋动作时，教练观察到客户的前臂可向垫面内旋约50度并能够外旋约90度接触垫面。教练会将测试结果记录为？",opts:["内旋肌与外旋肌都具备良好的灵活性","内旋肌紧张，外旋肌灵活性良好","外旋肌紧张，内旋肌灵活性良好","内旋肌与外旋肌都紧张"],ans:2,exp:"前臂不能内旋至少70度（该客户只达50度），表明外旋肌紧张；能外旋90度接触垫面，表明内旋肌具备良好灵活性。"},
+    {stem:"在跨栏步动作筛查过程中，教练观察到客户向前迈一步时出现了骨盆前倾与躯干前倾姿势。哪种代偿最可能引起该偏差姿势？",opts:["臀中肌与臀大肌薄弱无力","支撑腿的髋屈肌过紧","支撑腿的髋内收肌薄弱无力","踝关节趾屈肌过紧"],ans:1,exp:"观察到骨盆前倾与躯干前倾姿势，可能表明支撑腿的髋屈肌过紧并且腹直肌与背伸肌薄弱。"},
+    {stem:"在进行静态姿势评估时，私人教练若要观察客户身体前后侧的静息姿势是否平衡，则应观察哪个运动面的动作？",opts:["额状面","矢状面","冠状面","横断面"],ans:1,exp:"直角模型用于静态姿势评估时，额状面将人体分为均等的两部分，在矢状面前后部看起来也分布均衡。"},
+    {stem:"在托马斯试验中，教练注意到：当客户维持背部和骶骨平直时，下放的大腿后部与桌面接触，但膝关节屈曲角度不到80度。教练应怀疑哪块/哪些肌肉过紧？",opts:["股直肌","髂腰肌","主要的屈髋肌群","股后肌群"],ans:0,exp:"如果膝关节屈曲角度不到80度，应怀疑股直肌过紧，因为股直肌过紧会限制膝关节的屈曲动作。"},
+    {stem:"教练进行肩部筛查时，后面观发现客户的肩胛骨的椎骨端边缘外凸较明显，但肩胛骨下角则不明显。这种姿势偏差最有可能是？",opts:["肩胛前引","脊柱后弯","凹背姿势","翼状肩胛"],ans:0,exp:"肩胛骨椎骨端边缘（内侧缘）向外凸出，定义为“肩胛前引”，而肩胛下角与椎骨端边缘外凸较明显则称为“翼状肩胛”。"},
+    {stem:"客户进行肩关节内旋和外旋试验，教练的观察记录为：冈下肌与小圆肌可能过紧。教练观察到何种姿势才会得出上述结论？",opts:["客户前臂外旋90度以触及毯面","客户外旋前臂时观察到两侧手臂的姿势不一致","客户向毯面内旋前臂70度","客户内旋前臂时观察到两侧手臂的姿势不一致"],ans:3,exp:"如果客户内旋前臂角度达不到70度或两侧肢体姿势不一致，可能是因为手臂外旋肌群（冈下肌与大圆肌）过紧或关节囊与韧带过紧。"},
+    {stem:"被动直腿抬高试验是对下列哪些肌群的长度进行评估？",opts:["髂腰肌","臀肌","股后肌群","股四头肌"],ans:2,exp:"被动直腿抬高试验是骨盆处于中立位时对股后肌群的长度进行评估。"},
+    {stem:"下列选项中，哪一项描述的是“翼状肩胛”现象？",opts:["肩胛骨的下角和脊柱缘（内侧缘）突出","脊柱缘（内侧缘）向外突出","肩胛上角与肩胛冈突出","肩胛下角与肩胛骨外侧缘（盂肱缘）突出"],ans:0,exp:"肩胛下角与脊柱缘（内侧缘）突出，称为“翼状肩胛”。"},
+    {stem:"在抬腿试验筛查时，教练观察到客户骨盆前倾伴躯干前倾。由此判断，客户哪些肌肉可能活动不足或薄弱？",opts:["支撑腿屈髋肌群","臀中肌与臀大肌","髋内收肌与阔筋膜张肌","腹直肌与伸髋肌"],ans:3,exp:"如果客户出现骨盆前倾伴躯干前倾的体征，很有可能是支撑腿的屈髋肌群过于活跃或紧张，而腹直肌与伸髋肌活动不足或过于薄弱。"},
+    {stem:"除了骨骼系统的结构差异外，内旋的踝关节姿势 __________。",opts:["迫使胫骨内旋并导致股骨轻度内旋","导致小腿肌肉拉长并对踝关节的背屈动作产生限制","对于其余身体部位的运动链几乎没有影响","跟骨变为内翻姿势，脚后跟内侧缘稍微抬离地面"],ans:0,exp:"踝关节内旋迫使膝关节旋转，导致胫骨内旋并使股骨轻度内旋，进而收紧小腿部肌肉并可能限制踝关节背屈动作。"},
+    {stem:"将收紧的 ________与 _________的耦合定义为下交叉综合征。",opts:["腹直肌；股后肌群","屈髋肌群；竖脊肌","腹直肌；竖脊肌","屈髋肌群；股后肌群"],ans:1,exp:"收紧的（优势）髋屈肌通常与收紧的竖脊肌耦合，引起骨盆前倾，这种耦合关系定义为下交叉综合征。"},
+    {stem:"一名男性在单腿站立平衡能力试验中维持单腿站立姿势46秒。如何评价该客户的表现？",opts:["优秀","良好","一般","差"],ans:1,exp:"男性在单腿站立平衡能力试验中能维持41-50秒，得分等级为“良好”。"}
+  ]
+};
+
+// ========== 第八章：生理评估 ==========
+const CH08 = {
+  id: "ch08", title: "第八章：生理评估",
+  questions: [
+    {stem:"第2通气阈(VT2)试验的终点取决于客户读诵《效忠誓词》的能力或背诵其他文本句段的能力。",opts:["正确","错误"],ans:1,exp:"第1通气阈（而不是第2通气阈）试验的终点取决于客户读诵《效忠誓词》或背诵其他文本句段的能力。"},
+    {stem:"根据Foster与Porcari的调查报告，心脏病患者在健身设施运动时心脏病发作或心源性猝死的风险是在受监控的康复方案中发生率的_______________倍。",opts:["2","3","5","10"],ans:1,exp:"与受监控的康复训练方案相比，健身房会员的心脏病发作与心源性猝死率是前者的3倍（Foster与Porcari，2001年）。"},
+    {stem:"如果客户能规范执行10次150磅（68公斤）卧推动作，则该客户在这项运动的预测1-RM卧推重量为？",opts:["188磅（85公斤）","200磅（91公斤）","214磅（97公斤）","224磅（102公斤）"],ans:1,exp:"动作能重复10次表示重量为1-RM的75%，因此150磅/0.75=200磅（91公斤）。"},
+    {stem:"在运动测试过程中，发现下列哪些与血液灌注不良的体征或症状时需要立即终止测试并且可能需要转介至有资质的专业医务人员？",opts:["跛行","紫绀","疲劳","共济失调"],ans:1,exp:"血液灌注不良体征：头晕、苍白、紫绀（皮肤呈蓝色，尤其口周）、恶心、皮肤湿冷。"},
+    {stem:"测量最大摄氧量（VO2max）需要在实验室进行极量运动试验时收集并分析______________。",opts:["血氧水平","呼出的气体","核心温度","消耗的热量"],ans:1,exp:"测量VO2max需要在实验室进行极量运动试验时对运动受试者呼出的气体进行收集并分析。"},
+    {stem:"身材短小的个体可能不太适合进行哪种测试？",opts:["踏车运动试验","平板运动试验","通气阈测试","台阶测试"],ans:3,exp:"身材矮小的个体不适合进行台阶试验，因为阶梯高度可能会影响其迈步。"},
+    {stem:"下列哪种身体成分评估法估算的体脂百分比会随受试者身体水合状况而每天都发生巨大变化？",opts:["皮褶厚度测量法","生物电抗阻分析法（BIA）","水下皮脂测定法","双能X线吸收测定法（DEXA）"],ans:1,exp:"要通过BIA法获得准确的测量结果，受试者身体必须处于最佳的水合状态，很难保证受试者的水合水平。"},
+    {stem:"当客户准备进行1-RM肌力测试时，在第一次热身组测试中，私人教练应鼓励客户采用的重量为1-RM百分之多少？",opts:["25%","50%","75%","90%"],ans:1,exp:"客户应做一组可重复5-10次的轻负荷（约为预期1RM负荷的50%）热身运动，然后休息1分钟。"},
+    {stem:"女性客户达到多大的腰臀比阈值时可视为存在着健康风险？",opts:["0.79","0.82","0.86","0.95"],ans:2,exp:"女性客户的腰臀比达到或超过0.86时，视为存在健康风险；男性阈值则为0.95。"},
+    {stem:"一名54岁的男性客户，虽无运动禁忌，但该客户超过10年未曾积极规律运动，请问进行哪一项评估最恰当？",opts:["1.5英里快跑测试","Rockport健步行测试","VT2测试","1-RM倒蹬试验"],ans:1,exp:"Rockport健步行测试简单易行、成本不高，适合许多不积极规律参加运动训练的客户。"},
+    {stem:"_______________ 将体重与身高的关系描述为客观的比值。",opts:["BMI（体重指数）","DEXA（双能X线吸收法）","MRI（核磁共振）","NIR（近红外光谱法）"],ans:0,exp:"BMI是体重指数的英文缩写，将体重与身高的比值描述为两者之间的关系。"},
+    {stem:"下列哪种生理性评估是哮喘客户的运动禁忌项目？",opts:["塌车功量计试验","踏车运动试验","通气阈试验","阶梯试验"],ans:2,exp:"不建议某些呼吸系统疾病患者（哮喘或COPD）、有恐慌焦虑倾向的人、近期呼吸系统感染者进行通气阈试验。"},
+    {stem:"一名男性客户体重190磅，I-RM卧推重量为225磅。该客户在卧推运动中的相对肌力是",opts:["225磅","0.84","35磅","1.18"],ans:3,exp:"相对肌力=绝对肌力/体重=225磅/190磅=1.18。"},
+    {stem:"如果某人做某项活动需要消耗6梅脱（MET）的功能性能力，那么此人完成该运动共消耗氧气？",opts:["0.6 mL/kg/min","6 mL/kg/min","10.5 mL/kg/min","21 mL/kg/min"],ans:3,exp:"1MET等于3.5 mL/kg/min，因此6MET=6×3.5=21 mL/kg/min。"},
+    {stem:"下列哪种试验测量客户肌耐力的?",opts:["俯卧撑实验","1-RM卧推试验","YMCA亚极量阶梯试验","立定跳远试验"],ans:0,exp:"俯卧撑实验用于测试上身肌肉的耐力水平，特别是胸肌、肱三头肌和三角肌前束。"},
+    {stem:"下列反应中，需要立即终止运动测试一项是？",opts:["自感用力度（RPE）> 14（6-20级）","心率（HR）> 基于年龄预测的最大心率","收缩压（SBP） > 220毫米汞柱","舒张压（DBP） > 115毫米汞柱"],ans:3,exp:"血压过度升高（收缩压>250毫米汞柱或舒张压>115毫米汞柱）需要立即终止测试。"},
+    {stem:"评估下肢肌力最合适的方法是？",opts:["自重深蹲试验","10-RM倒蹬试验","立定跳远测试","1-RM深蹲试验"],ans:3,exp:"1-RM深蹲试验是唯一一种评估下肢肌力的方法。"},
+    {stem:"你的一名客户体重180磅，体脂百分比为20%。假设瘦体重维持不变，实现15%体脂目标时，他的体重约为多少？",opts:["144磅（65公斤）","149磅（68公斤）","169磅（77公斤）","175磅（80公斤）"],ans:2,exp:"100%-20%=80%，180×0.80=144磅；100%-15%=85%，144/0.85=169磅（77公斤）。"},
+    {stem:"在踏板运动试验中，客户诉说自己腿部痉挛，但觉得她自己能够完成该试验。教练应采取的最恰当的做法是？",opts:["密切观察运动状况，如果疼痛加重则要停止试验","允许客户完成这项实验，因为踏板运动试验测试的是心肺适能，而不是肌耐力水平","立即停止试验，如有可能，将客户推荐给初级保健专业人员","让客户停下休息几分钟，补充水分后从停下的节点继续该试验"],ans:2,exp:"腿痉挛或跛行属于需要终止测试的体征与症状，应立即停止试验并推荐给专业医疗人员。"},
+    {stem:"下列哪项运动最不能有效评估纵跳高度？",opts:["篮球","排球","短跑","足球"],ans:2,exp:"纵跳摸高测试适用于跳跃运动（篮球、排球、足球），短跑虽也是爆发性运动，但反映的是水平方向的加速能力。"},
+    {stem:"评估受试者加速、减速、变向后再加速能力的一项测试是？",opts:["40码短跑冲刺","专业敏捷性试验","敏捷梯训练","1.5英里快跑测试"],ans:1,exp:"专业敏捷性试验（20码敏捷跑试验或5-10-5折返跑试验）能对受试者加速、减速、改变方向后再加速的能力进行评估。"},
+    {stem:"一名男性客户的体重为190磅，1RM卧推重量为225磅。该客户这项运动的相对力量为 __________。",opts:["225磅","0.84","35磅","1.18"],ans:3,exp:"相对力量=绝对力量/体重=225磅/190磅=1.18。"},
+    {stem:"下列心肺适能测试中，哪种测试使用运动后即刻心率对客户的体适能水平进行评估？",opts:["第1通气阈试验","Rockport健步行测试","YMCA自行车试验","YMCA亚极量台阶试验"],ans:3,exp:"进行台阶测试时，体适能水平取决于运动后瞬时恢复心率。"},
+    {stem:"下列评估项目中，不使用最大心率估算值或最大摄氧量估算值，而是使用与客户对运动的独特代谢反应对应的实测心率的测试方法是？",opts:["YMCA自行车试验","Bruce亚极量平板运动试验","VT1亚极量谈话试验","Rockport健步行测试"],ans:2,exp:"亚极量谈话试验测量VT1时的心率反应，确定运动过程中连续讲话出现困难时的心率，反映个体独特代谢反应。"},
+    {stem:"一名竞技性足球运动员，运动项目要求加速、减速、变向然后再次加速的能力，想对体适能进行评估以对比将来取得的进步。下列哪项测试最能良好地检验这些运动技巧？",opts:["YMCA自行车试验","40码短跑冲刺试验","专业敏捷性试验","1.5英里快跑试验"],ans:2,exp:"专业敏捷性试验能快速简便地评估加速、减速、改变方向后再加速的能力，NFL和美国女足均使用该评估方法。"},
+    {stem:"有一名足球竞技运动员，运动项目需要加速、加速和变向后再加速的能力。想进行运动素质评估作为将来成绩提升的比较标准。哪种试验最适合测试上述运动技能？",opts:["立定跳远","40码短跑冲刺","敏捷跑试验","纵跳摸高试验"],ans:2,exp:"敏捷跑试验用于测试受试者的加速、加速和变向后再加速的能力，NFL与美国女足使用的评估项目就包含这种方法。"}
+  ]
+};
+
+// ========== 第九章：功能性训练的方案编排 ==========
+const CH09 = {
+  id: "ch09", title: "第九章：功能性训练的方案编排 稳定性-灵活性与动作训练",
+  questions: [
+    {stem:"下列能将骨盆前倾姿势拉向骨盆后倾姿势的力偶是？",opts:["髋屈肌与竖脊肌","股后肌群与竖脊肌","髋屈肌与腹直肌","股后肌群与腹直肌"],ans:3,exp:"骨盆维持中立位靠四大肌群互相拮抗：腹直肌向上牵拉骨盆前下部，股后肌群向下牵拉骨盆后下部，这两者的力偶将骨盆前倾拉向后倾。"},
+    {stem:"下列哪种关节的稳定性高于其灵活性？",opts:["踝关节","膝关节","胸椎","盂肱关节"],ans:1,exp:"关于全身运动链的关节稳定性和灵活性，膝关节的稳定性高，灵活性低，而其他三个选项的关节灵活性高于稳定性。"},
+    {stem:"髋关节缺乏灵活性最可能引起下列哪种后果？",opts:["肩胛胸壁关节与胸椎过度灵活","膝关节与腰椎的稳定性受影响","膝关节、踝关节与足部关节过度灵活","膝关节与腰椎的灵活性受影响"],ans:1,exp:"当髋关节的灵活性受限时，相邻的较稳定的关节（膝关节与腰椎）可能需要舍弃一定的稳定性来提升执行动作所需的灵活性。"},
+    {stem:"教练为了实现稳定性与灵活性训练的目标而重建客户全身动态链的稳定性与灵活性时，应从哪个身体部位开始？",opts:["腰椎","胸椎","髋关节","肩关节"],ans:0,exp:"重建过程应始于身体近端部位的腰椎，因为腰椎包绕着身体的质心与核心肌群，第一步应通过训练核心功能促进腰椎稳定性。"},
+    {stem:"当客户能够规范完成短力矩臂与长力矩臂跪姿伐木螺旋动作时，最合适的进阶运动应为？",opts:["全幅度旋转姿势下的伐木与捆草机动作","站姿长力矩臂伐木与捆草机动作","持2公斤药球执行站姿伐木与捆草机动作","站姿短力矩臂伐木螺旋动作"],ans:3,exp:"下一步适当进阶应引入站姿短力矩臂伐木螺旋动作训练，因为该动作减少支撑面积，同时不增加稳定性与灵活性难度。"},
+    {stem:"下列哪个关节稳定性高而灵活性低？",opts:["肩胛胸壁关节","踝关节","胸椎","盂肱关节"],ans:0,exp:"肩胛胸壁关节稳定性较强，灵活性较弱，正常发挥适当功能时，为盂肱关节的动作提供稳定基础。"},
+    {stem:"激活关节一侧肌肉时，该关节对侧肌肉的活动受到抑制，适用于这一过程的神经肌肉原理是？",opts:["交互抑制","自生抑制","应力松弛","牵张缩短"],ans:0,exp:"交互抑制原理指出，激活关节一侧肌肉（主动肌）时，该关节对侧肌肉（拮抗肌）活动将受到抑制。"},
+    {stem:"高水平的运动员如果已经具备了良好的柔韧性水平，在常规拉伸练习前想解决功能柔韧性问题。哪两种拉伸方式最适合该运动员？",opts:["主动隔离式拉伸与动态拉伸","动态拉伸与弹震式拉伸","静态拉伸与本体感受神经肌肉易化术","肌筋膜放松术与主动隔离式拉伸"],ans:1,exp:"动态拉伸与弹震式拉伸比较适合在常规拉伸练习前想解决功能柔韧性问题的运动员。"},
+    {stem:"腰椎具备近端稳定性后，身体稳定性与灵活性的训练重点应转移至建立 _____。",opts:["静态平衡能力","肢体远端的灵活性与稳定性","肩胸关节的稳定性","骨盆与胸椎的灵活性"],ans:3,exp:"按照近端稳定性促进远端灵活性的基本原则，腰椎建立稳定性后，下一步是要解决骨盆和胸椎的灵活性。"},
+    {stem:"下列哪种拉伸技巧需要在张力点维持拉力15-60秒？",opts:["动态拉伸","静态拉伸","主动隔离式拉伸","弹震式拉伸"],ans:1,exp:"静态拉伸应该在张力部位至少拉伸4次，并且每次拉伸至少维持15-60秒钟。"},
+    {stem:"在帮助客户构建肩胛胸壁关节的稳定性时，为了教客户如何“挤压”肩胛骨，教练首先应教客户执行？",opts:["在无阻力负荷的前提下执行肩关节对角动作","仰卧肩关节下抑与回缩动作","俯卧抬臂，练习“I”、“Y”、“W”、“O”等几种变形动作","采用弹力带执行肩关节内旋与外旋动作"],ans:1,exp:"为提高辨别良好肩胛骨位置的动觉意识，教练首先应教客户执行仰卧肩关节下抑与回缩动作。"},
+    {stem:"通常被称为“核心”的躯干中间肌层包括_____________。",opts:["多裂肌、腰方肌、腹横肌、腹内斜肌的深层肌纤维、膈与盆底肌群","竖脊肌、腹外斜肌、腹内斜肌的深层肌纤维、髂腰肌、腹直肌与背阔肌","腹横肌、膈、棘间肌、横突间肌与回旋肌","腰方肌、多裂肌、腹外斜肌、竖脊肌与盆底肌群"],ans:0,exp:"腹横肌（TVA）、多裂肌、腰方肌、腹内斜肌的深层肌纤维、膈、盆底肌与相邻筋膜组成的肌层通常称为核心。"},
+    {stem:"下列哪一项操作技巧会降低某项运动的平衡难度?",opts:["缩窄支撑面的间距","降低质心高度","运动过程中交替仰视和俯视","紧闭双目"],ans:1,exp:"降低质心高度会降低运动的平衡难度，而其他选项都是增加平衡的难度。"},
+    {stem:"当客户能够完成2组（每组动作重复10次）桥臀动作时，最合适的运动进阶是哪一项？",opts:["单腿桥臀动作，在胸椎下放置垫高物","稳定球单腿桥臀动作，对侧膝拉向胸部","单腿桥臀动作，对侧膝拉向胸部","稳定球单腿桥臀动作，对侧腿伸直"],ans:2,exp:"执行单腿桥臀动作时将对侧膝拉向胸部是最合适的进阶动作，将身体维持在稳定面上，同时增加核心难度并集中锻炼臀部肌群。"},
+    {stem:"一旦客户双脚站立时能维持良好的静态平衡能力，教练引入哪种运动进阶最合适？",opts:["减少身体接触点（双脚变单脚）","在不稳定面上维持身体平衡","闭双目抬双臂过顶","缩窄支撑面"],ans:3,exp:"在正常站立姿势下，增加平衡能力训练难度的第一步进阶就是缩窄支撑面。"},
+    {stem:"在动作训练阶段，下列哪种运动项目能最有效地解决转体动作模式问题？",opts:["伐木动作","单侧划船动作","箭步蹲","屈髋动作"],ans:0,exp:"伐木动作属于转体动作。单侧划船属于拉的动作，箭步蹲属于单腿动作，而屈髋则属于弯腰-提起动作。"},
+    {stem:"维持中性骨盆姿势需要下列哪些肌肉向上牵拉骨盆的前下表面？",opts:["竖脊肌","股后肌群","腹直肌","屈髋肌群"],ans:2,exp:"骨盆维持正常姿势靠四大肌群互相拮抗：腹直肌向上拉伸骨盆前下部。"},
+    {stem:"下列哪种动作对胸椎的灵活性要求最高？",opts:["推","弯腰-提起动作","转体动作","拉"],ans:2,exp:"转体动作比推、拉动作对胸椎灵活性的要求更高，这是由转体动作的三维动作模式这一属性所决定。"},
+    {stem:"男性与女性相比的质心稍低，因为男性的体重较大且站距较窄。",opts:["正确","错误"],ans:1,exp:"质心位置因人而异，一般来说男性的质心稍高于女性，因为男性上身的肌肉重量较大。"},
+    {stem:"维持肌肉被动缩短姿势__________肌肉便可变短。",opts:["2-4小时","2-3小时","2-4周","2-3个月"],ans:2,exp:"肌肉维持被动缩短姿势且不拉伸，2-4周便可变短，例如持续弯腰伏案工作，胸大肌会缩短。"},
+    {stem:"在核心稳定性技术中，主要负责“环向张力”的肌群是哪一项？",opts:["腹直肌","腹外斜肌","腹横肌","多裂肌"],ans:2,exp:"激活核心肌群（主要是腹横肌）时，可产生“环向张力”效应，类似于在腰部束紧一条腰带。"},
+    {stem:"损伤与姿势偏差等状况引起长时间关节动作受限可导致关节一侧肌肉变短，对侧肌肉变长。这些肌肉长度变化会对肌肉发力能力产生怎样的影响？",opts:["变长的肌肉一般能在全关节活动度内产生更大的力，这是因为肌肉长度最大时，产生的力最大","缩短的肌肉与正常长度的肌肉产生的力相等，只是动作速度更快","肌肉在新的长度下发力能力更强，但在正常静息长度下发力水平下降","肌肉在新的长度下发力能力下降，但在正常静息长度下发力水平更高"],ans:2,exp:"由于肌小节产生了适应性变化，肌肉在新的长度下发力能力更强，但在正常静息长度下发力水平下降。"},
+    {stem:"在帮助客户学习规范的弯腰-提起动作技术时，下列哪一项进阶遵守由部分至整体的教学策略？",opts:["屈髋、下肢对齐、4字姿势","4字姿势、各种足姿下的下蹲动作、箭步蹲","屈髋、4字姿势、各种足姿下的下蹲动作、下蹲时执行手臂动作","4字姿势、下蹲时执行手臂动作、箭步蹲组合动作"],ans:2,exp:"屈髋、4字姿势、各种足姿下的下蹲动作、下蹲时执行手臂动作是下蹲动作练习时采用的由部分至整体的教学策略。"}
+  ]
+};
+
+// ========== 第十章：抗阻训练的运动方案编排与进阶 ==========
+const CH10 = {
+  id: "ch10", title: "第十章：抗阻训练的运动方案编排与进阶",
+  questions: [
+    {stem:"如果小组私教课客户的主要目标需要提升肌耐力，那么循环抗阻训练的运动/恢复时间比最合适的一项是？",opts:["运动75秒：恢复15秒","运动90秒：恢复2-3分钟","运动90秒：恢复60秒","运动75秒：恢复3-5分钟"],ans:0,exp:"运动75秒、休息15秒符合肌耐力训练的参数标准，即训练动作≥12次，休息时间≤30秒。"},
+    {stem:"一次抗阻训练最可能引起的生理性变化是？",opts:["肌力增加","暂时性肌肥大","骨骼重建","瘦体重增加"],ans:1,exp:"暂时性肌肥大是抗阻训练时的“肌肉帮浦效应”，由细胞间积液引起，运动后体液平衡恢复正常，肌肥大将很快消失。"},
+    {stem:"如果一名客户能够成功完成预设次数的纵跳与单次直线跳动作时，下列哪种增强式训练是最合适的进阶动作？",opts:["深跳","多次跳","单足跳与弹跳","多次直线跳"],ans:3,exp:"本题中最恰当的进阶运动是增加连续直线跳的动作数量，即多次直线跳。"},
+    {stem:"下列哪种组数、动作重复次数与运动负荷的组合产生的总运动量最大？",opts:["2组x8次x100磅（45.5公斤）","1组x12次x150磅（68.2公斤）","3组x4次x160磅（90.9公斤）","2组x12次x90磅（40.9公斤）"],ans:3,exp:"运动量=重量负荷×重复次数×组数，2组x12次x90磅=2160磅，是四个选项中最大的运动量。"},
+    {stem:"当客户采用ACE IFT训练模式进阶至负荷训练期，掌握了前一期的稳定性与灵活性运动后，就不再需要在每次训练中包含稳定性与灵活性运动项目。",opts:["正确","错误"],ans:1,exp:"无论负荷训练运动方案的具体目标是什么，都建议在每次的热身与冷身运动中包含稳定性与灵活性练习。"},
+    {stem:"采用双重进阶法训练时，首先要如何进阶？",opts:["阻力负荷增加5%","增加每组动作的重复次数","增加该项目的训练组数","减少组间休息时间"],ans:1,exp:"双重进阶方案适用于任何重复次数范围的运动项目，首先要增加重复次数，然后再增加阻力负荷。"},
+    {stem:"训练频率同时与训练 _______________和训练______________成反比。",opts:["量；类型","类型；强度","量；强度","类型；持续时间"],ans:2,exp:"训练频率同时与训练量和训练强度成反比。较为剧烈的运动产生较多肌肉微损伤，需要较长恢复时间，需要减少运动频率。"},
+    {stem:"如果客户的主要目标是提升肌力，请问下列最合适的运动方案是哪一项？",opts:["每个大肌群训练2组x4-6次，采用分部位训练法，保证相同肌群的训练间隔时间为72-96小时","每个主要动作模式训练2组x8-12次，采用3天波状分期模式进行全身训练，两次训练的间隔时间为48小时","每个大肌群训练3组x8-10次，采用分部位训练法，保证相同肌群的训练间隔时间为48-72小时","进行3组x3-5次爆发性全身运动，每周训练3天，两次训练间隔为48-72小时"],ans:0,exp:"为优化肌力训练效果，训练负荷应为每组动作重复4-8次时目标肌群力竭，同一肌群两次训练间隔至少72小时。"},
+    {stem:"你有一名新客户，想为参加某项运动比赛而训练。客户满足什么条件才能安全有效地过渡、进阶至运动表现训练期（4期）？",opts:["成功完成稳定性与灵活性训练，然后执行12周负荷训练","具备良好的姿势稳定性、适当的动作模式与较高的肌力水平","成功完成稳定性与灵活性训练与动作训练","至少连续3年规律参加抗阻训练"],ans:1,exp:"开展运动表现训练的先决条件：肌力与关节完整性、适当的静态与动态平衡能力、有效的核心功能、无氧效率、运动能力等。"},
+    {stem:"你的一名新客户希望开始参加抗阻训练，为自己即将在落基山脉进行的一个月背包旅行做好准备。下列哪种训练组数与动作重复次数最合适？",opts:["1-2组x8-10次","2-4组x4-6次","2-3组x12-16次","3-5组x6-12次"],ans:2,exp:"2-3组x12-16次比较适合发展肌耐力，对于为远足旅行而训练的客户最有帮助。"},
+    {stem:"定义为肌力与动作速度的乘积，是下列哪个术语的定义？",opts:["肌耐力","肌肉爆发力","绝对力量","相对力量"],ans:1,exp:"肌肉爆发力是指肌力与动作速度的乘积。"},
+    {stem:"下列哪一组个体组合最适合进行小组训练？",opts:["体适能目标相近的4个人","体适能水平各异的3个人","有相似骨病的5个人","能按照时间安排坚持参加运动方案的5个人"],ans:0,exp:"体适能目标相似的客户参加小组训练效果也更好。"},
+    {stem:"客户的抗阻训练方案包括每项运动做4组，每组重复动作4次。这种运动量最适合实现哪种训练目标？",opts:["肌肥大","肌耐力","肌力","全身肌肉适能"],ans:2,exp:"任何执行2-6组、每组重复等于或低于6次的训练方案都可以有效提高肌力水平。"},
+    {stem:"下列与技巧相关的身体素质中，在客户运动方案中可能需要解决的一项是？",opts:["平衡能力","柔韧性","身体成分","有氧能力"],ans:0,exp:"与运动技能有关的身体素质包括爆发力、速度、平衡能力、敏捷性、协调性和反应性。其它选项都是与健康有关的参数。"},
+    {stem:"增强式运动方案对肌肉适能的哪个方面的锻炼效果最好？",opts:["肌肥大","肌力","肌肉爆发力","肌耐力"],ans:2,exp:"如果要提高肌肉发力和爆发力水平，则可以开展增强式训练。"},
+    {stem:"下列增强式运动项目中，哪一项运动的训练强度最大？",opts:["多直线跳","原地跳","单脚跳与弹跳","多向跳"],ans:2,exp:"单脚跳与弹跳在所有上述选项中运动强度最大，强调水平方向的动作速度，执行时重复动作无休息。"},
+    {stem:"按照训练的可逆性原则，客户停止开展抗阻训练后，肌力将以训练增长速度的 _____________逐渐下降。",opts:["相同的速度","两倍的速度","十分之一速度","二分之一速度"],ans:3,exp:"停止力量训练后，客户力量下降的速度是增长速度的50%。"},
+    {stem:"你有一位47岁的女性新客户，她想减轻体重，但有点担忧抗阻训练，因为她不想变“大块头”。教练应如何应对才能最有利于激励客户坚持参加抗阻训练方案？",opts:["为客户设计以心肺运动为主的运动方案，采用轻负荷（40% 1-RM）、高重复次数（15-25）的循环训练法，从而帮助客户轻松地实现其目标","告诉客户没什么好担心的，因为女性产生的睾酮量不及男性，不会变“大块头”","对她担忧变“大块头”表示有同感，向客户保证会为她设计运动方案，能帮助她改善肌肉线条而不会增加肌肉块头","向客户解释肌组织每10年会减少约5磅（2.3公斤），说明抗阻训练能恢复损失的肌肉并能提高静息代谢率"],ans:3,exp:"向客户解释与减重有关的事实，有助于客户重视负重训练在全面运动方案中的作用。"},
+    {stem:"客户按照以下方案坚持运动：频率相同肌群间隔至少72小时，强度70-80%最大阻力负荷运动50-70秒力竭，重复次数8-12，组数3-4组休息30-60秒，多关节与单关节结合。肌肉适能的哪个方面能得到最佳训练效果？",opts:["肌肥大","肌力","肌肉爆发力","肌耐力"],ans:0,exp:"这种训练方案最适合实现肌肥大的训练目标，推荐运动强度为最大阻力的70-80%（重复次数范围8-12）。"},
+    {stem:"在教练设计的抗阻训练方案中，客户每组动作重复8-12次，采用双重进阶法安排进阶。最近能够完成200磅腿部推举2组，每组8-12次。该客户腿部推举的最合适的进阶训练是哪一项？",opts:["将训练重量增加至220磅并以重复完成12次为目标","继续使用当前重量，直到每组能重复完成15次，然后增加重量10%","将训练重量增加至210磅并以动作重复12次为目标","将训练重量增加至240磅然后每组动作重复8次"],ans:2,exp:"对力量训练方案采用双重进阶法时，首先增加动作重复次数，然后增加约5%的阻力。"},
+    {stem:"关于I型肌纤维在抗阻训练中的作用，下列描述最准确的一项是？",opts:["负责快速产生较大力的动作","主要在产生较小力的过程中比较活跃","参与氧化供能过程的肌肉收缩活动，在抗阻运动过程中不活跃"],ans:1,exp:"I型肌纤维通常较小，有氧能力更强（长时间维持低发力水平），主要在产生较小力的过程中比较活跃。"}
+  ]
+};
+
+// ========== 第十一章：心肺训练的运动方案编排与进阶 ==========
+const CH11 = {
+  id: "ch11", title: "第十一章：心肺训练的运动方案编排与进阶",
+  questions: [
+    {stem:"大部分每周多次去健身房或在家运动的健身爱好者会维持多年的有氧效率训练。对这些训练有素的非运动员进行研究显示，他们在2区训练时间可占总时间的______ % 。",opts:["10","25","35","50"],ans:3,exp:"研究表明，训练良好的非运动员往往很大一部分时间（约50%）都是在2区开展训练。"},
+    {stem:"断断续续的训练模式既适合年轻人也适合老年人练习。",opts:["正确","错误"],ans:1,exp:"尽管年轻人很享受这种运动，但老年人一般不能承受此类断断续续的运动（伴重负荷、快速增加训练负荷以及单一模式）。"},
+    {stem:"在运动方案的早期阶段，私人教练对哪种运动变量变换最合适？",opts:["运动时间","训练强度","运动频率","运动类型"],ans:0,exp:"训练起始阶段最适宜操作的变量是运动时间，开始4-6周，每一到两周增加运动时间10%或5-10分钟。"},
+    {stem:"在ACE IFT模式训练的哪一阶段时，客户的心肺训练强度可通过第二通气阈试验将运动心率确定在VT2？",opts:["1期","2期","3期","4期"],ans:2,exp:"3期适用人群为想提高耐力成绩和/或每周有氧运动时间超过7小时的客户，最适合通过第二通气阈试验确定第二通气阈时的运动心率。"},
+    {stem:"使用心率储备（HRR）计算运动靶心率的最主要的限制因素是？",opts:["靶心率必须使用卡式公式计算为%HRR形式","使用HRR精确计算运动方案所需的靶心率，需要实际测量最大心率与静息心率值","新的MHR预测方程比220-R精确计算运动方案所需的靶心率需要实际测量最大心率与静息心率值","运动百分比例是通过人群调查建立的数据"],ans:1,exp:"采用心率储备模型计算靶心率存在局限性，该模型在获得实测最大心率的基础上才能得出最准确的结果。"},
+    {stem:"一个客户可以在他85%的最大心率下进行规律的中-高强度训练，应将该客户的体适能水平划分为？",opts:["差/一般","一般/中等","中等/良好","良好/优秀"],ans:2,exp:"此类体适能水平下的客户会习惯性地参加体育活动：规律进行中等强度至剧烈训练，强度相当于最大心率的80-91%或65-80%的HRR/VO2max。"},
+    {stem:"要求所有客户充分冷身的主要原因是？",opts:["为了预防延迟性肌肉酸痛（DOMS）","进行静态拉伸以提高柔韧性","提高静脉回心血量，以防血液在肢体淤积","维持较高的热量支出以促进减重"],ans:2,exp:"冷身训练期主要目的在于防止运动结束后血液在肢体淤积，防止“肌肉帮浦效应”引起的血液淤积。"},
+    {stem:"在心肺运动时，运动者逐渐增加运动强度，运动初期耗氧量的增加与每分通气量呈线性正比关系。当线性增加无法满足氧气需求时，通气量会呈非线性增加，这一点叫做___________，可通过___________测量。",opts:["有氧能力；VO2max测试","第2通气阈（VT2）；VT2测试","血乳酸堆积（OBLA）；血乳酸分析仪","第1通气阈（VT1）；VT1亚极量谈话试验"],ans:3,exp:"亚极量谈话试验有效的前提是运动强度在VT1附近，通气量增加靠呼吸频率增加实现。"},
+    {stem:"在ACE IFT模式下的心肺训练的哪一期应将2区低强度的训练引入客户的运动方案中？",opts:["1期","2期","3期","4期"],ans:1,exp:"心肺训练2期着重通过增加运动时间并增加频率，提升有氧效率并引入2区间歇式训练。"},
+    {stem:"进行谈话试验时，客户能够说话，但说话时感觉不是很舒适。请问该客户大约处于何种训练强度？",opts:["低于VT1","刚好高于VT1","刚好低于VT2","高于VT2"],ans:1,exp:"运动强度低于VT1，人们都能轻松谈话。高于VT1但低于VT2的强度下，受试者能够说话，但会感觉不舒适。"},
+    {stem:"如果客户训练时心率值等于其第二通气阈时，则该客户处于三区训练模式的哪一区？",opts:["1区","2区","3区"],ans:2,exp:"3区的训练强度为心率等于或大于VT2，而1区的心率值低于VT1，2区的心率值则从VT1至刚好低于VT2。"},
+    {stem:"下列哪一项周训练计划的session自感用力度（session RPE）得分点为450分？",opts:["4次训练x25分钟，自感用力度为5","2次训练x30分钟，自感用力度为5+2次训练x20分钟，自感用力度为3","3次训练x30分钟，自感用力度为5","2次训练x30分钟，自感用力度为4+3次训练x20分钟，自感用力度为4.5"],ans:2,exp:"3次训练x30分钟=90分钟。90分钟xRPE5=450分。"},
+    {stem:"下列哪一项训练场景最可能引起耐力运动员出现过度训练综合征？",opts:["3区的训练强度每周增加10%","减少每周休息的天数来配合增加的训练时间","通过三周时间将1区的训练时间增加20%","增加运动强度时，减少2区训练的总时间"],ans:1,exp:"对于竞技性运动者而言，减少每周休息的天数来配合增加的训练时间，容易导致训练中产生的不适应（如过度训练综合征）。"},
+    {stem:"下列与第2通气阈（VT2）对应的选项是？",opts:["谈话试验阈值","血乳酸堆积（OBLA）","有氧能力","1区与2区的分界点"],ans:1,exp:"随着运动强度升高，血液pH开始降低（乳酸堆积），呼吸速率加快（第二通气阈），通常在血乳酸浓度达到4mmol/L后出现（相当于OBLA）。"},
+    {stem:"在稳态式心肺运动时，下列哪一项因素对运动时间产生限制的可能性最小？",opts:["氧利用度","来源于储存性脂肪和（或）脂肪酸的能量利用度","持续运动的意愿度","来源于储存糖原和（或）血糖的能量利用度"],ans:1,exp:"运动持续时间主要受到个体意志或氧气、肌糖原和（或）血糖利用率等因素影响，储存脂肪能量利用度限制可能性最小。"},
+    {stem:"引起心血管偏差的原因是什么？",opts:["通过出汗调节体温时血容量降低，引起心率代偿性增加","疲劳导致机体无法维持心输出量，引起心率下降","通过出汗调节体温时血容量降低，引起心搏量代偿性增加","疲劳导致机体无法维持心输出量，引起心搏量下降"],ans:0,exp:"体液以汗液形式流失，导致心率代偿性加快以维持心输出量，血量小幅降低从而抵销小幅减少的每搏输出量。"},
+    {stem:"在ACE IFT模式训练的哪一阶段时，客户的心肺训练强度应为自感用力度3-4级？",opts:["1期","2期","3期","4期"],ans:0,exp:"在1期训练时，训练重点是在1区进行稳态式运动，1区强度可通过谈话试验衡量，或自感用力度为3-4级。"},
+    {stem:"对于绝大多数运动项目而言，每周至少需要进行 ______________ 分钟中等强度的体力活动有益于身体健康",opts:["60分钟","75分钟","150分钟","180分钟"],ans:2,exp:"2008美国人体力活动指南建议每周至少进行150分钟中等强度的体力活动。"},
+    {stem:"心率等于或高于VT1的训练处于哪个训练期？",opts:["有氧基础","有氧效率","无氧耐力","无氧爆发力"],ans:1,exp:"有氧基础训练期训练重点在1区（低于VT1）。2期-有氧效率期时训练负荷增加至VT1，然后进阶至2区低强度部分（刚好高于VT1）。"},
+    {stem:"ACE IFT模型中有氧基础训练的要点是什么？",opts:["通过增加训练1区的运动时间，为客户创造正面积极的体验并实现初期成功","逐渐增加2区训练强度至临界低于VT2","为提高长距离赛事的运动表现，将构建稳固的耐力基础纳入分期训练方案中","将训练目标从提高健康过渡至提高体适能水平"],ans:0,exp:"1期训练的主要目标是令久坐少动或心肺适能水平较低的客户开始定期进行中低强度心肺运动，帮助客户营造积极心肺训练体验感。"}
+  ]
+};
+
+// ========== 第十二章：ACE IFT训练模型的实践应用 ==========
+const CH12 = {
+  id: "ch12", title: "第十二章：ACE IFT训练模型的实践应用",
+  questions: [
+    {stem:"客户信息：男，38岁，父亲53岁被诊断高血压，12年前戒烟，BMI 28，血压137/86，总胆固醇221，空腹血糖98。过去7年每周5天60-90分钟抗阻训练。目标：处于高血压前期，需降低总胆固醇，不想服药，还想减脂10磅并增加肌力。根据ACSM风险分级标准，该客户的风险等级为？",opts:["低危","中危","高危","极高危"],ans:1,exp:"客户有2项风险因子（血清总胆固醇≥200mg/dL，以及久坐少动的心肺运动习惯不足），因此风险等级为中危。"},
+    {stem:"（承上题）根据ACE IFT模型，此时对该客户进行何种心肺评估最合适？",opts:["VT1亚极量谈话试验","Rockport健步行测试","此时没必要进行评估","VT2试验"],ans:2,exp:"由于该客户目前未执行心肺运动，心肺运动将作为新的运动模式引入。可直接开始1期心肺训练，没必要进行评估。"},
+    {stem:"（承上题）根据该客户当前的运动情况与体适能水平，为了帮助他实现目标，初期应采用何种运动方案最合适？",opts:["1区训练中，将热身时间延长为15分钟的稳态式运动，逐渐将1区训练时间延长至20-30分钟的持续运动，然后进阶至2期：有氧效率训练","开始时进行心肺训练2期：有氧效率训练，训练重点是从2区的低强度阶段过渡至2区的高强度训练阶段，以增加热量支出","1区持续训练时间延长至20分钟，然后短暂休息1分钟（1：3运动/休息时间比）。将训练时间进阶至30分钟并增加休息时间，然后进阶至2期：有氧效率训练","热身时间延长至15分钟，然后在2区训练5分钟，最后进行10分钟1区强度的冷身活动"],ans:0,exp:"由于该客户之前没接触过心肺运动，应从1期训练开始，当客户能在1区维持稳态式心肺运动20-30分钟并感觉舒适时，便可进阶至2期训练。"},
+    {stem:"（承上题）按照该客户的躯干肌耐力试验结果（屈=80秒；伸=50秒；右侧桥=50秒；左侧桥=48秒），下列哪一项肌耐力比例符合测试肌群的耐力平衡标准？",opts:["屈伸比","右侧桥：左侧桥","右侧桥：伸","左侧桥：伸"],ans:1,exp:"当左右侧肌力相对平衡时，比值得分偏离平衡分值1.0不应超过0.05。客户得分（50秒/48秒=1.04）表明处于可接受范围。"},
+    {stem:"（承上题）根据上述提供的信息，最适合该客户的初期功能性动作与抗阻训练方案的一项是？",opts:["采用波状分期模型对当前运动方案进阶，增加动态热身活动来提高核心稳定性","通过动作训练（2期）使客户能执行规范的蹲、箭步蹲、推、拉、旋转等动作","执行新的负荷训练（3期）分部位训练方案，在冷身活动期延长柔韧性练习时间","通过稳定性与灵活性训练（1期）来提升核心稳定性、核心肌力、核心功能与柔韧性水平"],ans:3,exp:"该客户姿势筛查显示肩关节内旋并脊柱前弯，动作与柔韧性评估活动度不足，因此应在1期训练中着重解决这些问题。"},
+    {stem:"客户信息：女，27岁，母亲骨质疏松，父亲52岁冠脉搭桥，不吸烟，BMI 21，血压114/68，总胆固醇168，LDL 95，HDL 64，空腹血糖87。每周5天跑步训练。目标：降低骨质疏松风险、改善姿势。根据ACSM风险分级标准，该客户罹患血管硬化性心血管疾病的总分与相关风险等级分别为？",opts:["总分=0；低危","总分=+1；低危","总分=+1；中危","总分=+2；中危"],ans:0,exp:"该客户总分为0分[父亲52岁做冠脉搭桥（+1），HDL胆固醇64毫克/分升（-1）]，表明客户处于低危水平。"},
+    {stem:"（承上题）根据ACE IFT模型，此时对该客户进行何种心肺评估最合适？",opts:["专业敏捷性测试","VT1亚极量谈话试验","VT2试验","此时没必要进行评估"],ans:1,exp:"由于该客户具有耐力跑经验（每次跑30-90分钟），通过执行亚极量谈话试验确定其在VT1强度时的心率是最合适的。"},
+    {stem:"（承上题）按照该客户的躯干肌耐力试验结果（屈=40秒；伸=60秒；右侧桥=46秒；左侧桥=44秒），下列哪一项肌耐力比例不符合测试肌群的耐力平衡标准？",opts:["屈：伸","右侧桥：左侧桥比率","右侧桥：伸","左侧桥：伸"],ans:2,exp:"任一侧的伸展比率都应小于0.75。该客户的右侧桥：伸比率不足（46/60=0.767）。"},
+    {stem:"（承上题）根据上述信息，最适合该客户的初期功能性动作与抗阻训练方案的一项是？",opts:["推荐客户参加4周团体力量训练课，以帮助客户在开始私教培训课之前提升肌耐力水平","进行稳定性与灵活性训练（1期），以改善姿势、核心力量与功能水平","通过动作训练（2期）掌握规范的蹲、箭步蹲、推、拉、旋转等动作技巧","设计一个初期负荷训练（3期）方案，训练6-10项使用训练器械的运动"],ans:1,exp:"由于该客户的姿势、核心功能与关节活动度需要提高，应在1期训练中着重解决这些问题。"},
+    {stem:"（承上题）根据客户在弯腰-提起动作筛查中的表现结果（膝关节前移，无法规范完成4字姿势，脚跟会抬离地面），最可能阻碍客户正确执行该筛查的限制因素是？",opts:["核心肌群薄弱无力并且股后肌群过紧","臀肌肌群优势并且背屈肌过紧","股四头肌与趾屈肌薄弱无力","股四头肌与髋屈肌优势并且趾屈肌过紧"],ans:3,exp:"膝关节前移表明股四头肌优势，会导致股四头肌承受较大负荷。足跟抬离地面表明客户趾屈肌可能过于紧张（背屈不足）。"}
+  ]
+};
+// ========== 第十三章：身心运动 ==========
+const CH13 = {
+  id: "ch13", title: "第十三章：身心运动",
+  questions: [
+    {stem:"哪种瑜伽术语，当然也是一种瑜伽类型的字面意思为“蟠龙、力量”，或盘曲与体内的能量?",opts:["热瑜伽","昆达利尼瑜伽","克利帕鲁瑜伽","阿奴萨拉"],ans:1,exp:"昆达利尼瑜伽通过体位、呼吸控制、颂唱与冥想等方式唤醒体内圣蛇的力量（蟠龙或盘卷的能量）。"},
+    {stem:"_______________是一种自主控制呼吸的方法，包括有意识地吸气、屏气与呼气。",opts:["瑜伽体位","希瓦难陀","维尼瑜伽","调息"],ans:3,exp:"调息法或自主呼吸控制通常与冥想和瑜伽体式协同进行，但也可以独立练习。"},
+    {stem:"下列哪种身心运动被描述为一种动态冥想最为贴切？",opts:["肌肉神经整合运动（Nia）","瑜伽","太极","普拉提"],ans:2,exp:"太极是一种起源于气功的武术项目，最好被描述为一种动态冥想。"},
+    {stem:"哪种太极拳是当今西方人最常练习的形式？",opts:["最初的陈式太极拳","长拳","杨氏太极拳","吴式太极拳"],ans:2,exp:"杨氏太极拳19世纪由杨露禅所创，是当今西方人最常练习的太极拳，改编的24式如今比较流行。"},
+    {stem:"哪种当代身心运动会需要在地板/地垫上训练或使用一种称为矫正器的器械？",opts:["神经肌肉整合运动(Nia)","普拉提","亚历山大疗法","费登奎斯法"],ans:1,exp:"普拉提的概念基础是姿势肌维持身体平衡并为脊柱提供支撑力，分为垫子与矫正器两种主要形式。"},
+    {stem:"对病情稳定的慢性病患者有用的身心运动方案的特征是？",opts:["提升实时认知觉醒","提高本体感受与动觉","运动强度范围为3-6梅脱","提升有氧能力"],ans:1,exp:"这类方案可在较低运动强度下（2-4梅脱）进行，实时认知觉醒与应激激素激活水平下降，提高本体感受与动觉。"},
+    {stem:"对哈他瑜伽进行训练进阶的主要方法是？",opts:["增加环境的恶劣程度，如在炎热环境中练习","在练习瑜伽时使用瑜伽砖","增加负重或阻力","增加瑜伽姿势的难度"],ans:3,exp:"哈他瑜伽的主要难点是在各种瑜伽体位与呼吸模式下熟练应对逐渐增加的复杂度与难度。"},
+    {stem:"哪种瑜伽又称为“力量瑜伽”？",opts:["阿奴萨拉瑜伽","阿斯汤伽瑜伽","维尼瑜伽","克利帕鲁瑜伽"],ans:1,exp:"阿斯汤伽瑜伽姿势按顺序分成多组体位，难度从中等至较大，常被总结为“力量瑜伽”。"},
+    {stem:"机体对身心运动产生的情感反应与神经内分泌反应是通过下丘脑-垂体-肾上腺轴（HPA）进行调节的，可引起哪种与应激有关的激素生成量下降？",opts:["肾素与胃饥饿素","胰岛素与胰高血糖素","儿茶酚胺类与皮质醇","血清素与乙酰胆碱"],ans:2,exp:"CRH与ACTH将大脑与身体密切结合，导致儿茶酚胺类与皮质醇生成减少并且觉醒程度下降与过度警觉。"},
+    {stem:"客观评估身心运动方案的其中一种方式是记录基准血压值和系列血压测量值。",opts:["正确","错误"],ans:0,exp:"安静血压的基准值和系列测量值可作为4-6周身心运动的效果评估指标，特别适合血压偏高者。"},
+    {stem:"私人教练如何最有效地将身心运动融入客户的私教运动方案中？",opts:["在冷身活动中加入一些艾扬格瑜伽体位与瑜伽呼吸","通过和缓、受控的瑜伽呼吸法提升爆发力训练","在高强度训练中使用瑜珈呼吸法来提高每分通气量","在全面的热身活动中融入倒立体位"],ans:0,exp:"教练可将康复瑜伽或艾扬格瑜伽体位融入运动方案的柔韧性与肌力训练中，在热身与冷身活动中融入冥想与瑜珈呼吸。"},
+    {stem:"那种当代身心运动包含的有氧训练项目能培养练习者的自发性？",opts:["神经肌肉整合运动(Nia)","普拉提","亚历山大疗法","费登奎斯法"],ans:0,exp:"与其他身心运动方案不同，Nia还能提高心肺耐力水平，其有氧训练项目能培养练习者的创造性和自发性。"},
+    {stem:"当教练教体能低下或患有慢性疾病的客户练习瑜伽时，下列哪一项运动方案修改是最重要的？",opts:["呼气结束后增加憋气时间4-5秒","尽量减少执行头部低于心脏位置的体位训练","避免不同瑜伽体位之间的缓慢变换","高血压客户增加艾扬格瑜伽体位的维持时间"],ans:1,exp:"体能低下者或慢性疾病患者练习瑜伽之初应尽量减少快速变换体位（肢体与躯干相对心脏位置变化）的动作。"},
+    {stem:"下列属于经典身心运动（传承时间超过200年）的选项是？",opts:["跆拳道","普拉提","哈他瑜伽","费登奎司法"],ans:2,exp:"太极拳、气功、哈他瑜伽、灵魂舞与某些古代武术传承时间均超过200年。"},
+    {stem:"一名老年客户想尝试身心运动并认为太极拳最符合自己的需求和能力。作为教练会向他推荐哪种太极拳？",opts:["最初的陈式太极拳","长拳","吴式太极拳","孙式太极拳"],ans:3,exp:"孙式太极拳架高，因此老年人练习起来较为简单。"},
+    {stem:"哪种身心运动本质上是一种动作再教育，也就是将效率低下的动作模式分解为不同的组分？",opts:["艾扬格瑜伽","太极","气功","普拉提"],ans:3,exp:"普拉提本质上是一种动作再教育，客户在练习过程中能学会如何克服错误的代偿动作模式。"},
+    {stem:"哪种类型的瑜伽训练方案最适合瑜伽初学者练习？",opts:["康复瑜伽","整合瑜伽","热瑜伽","阿斯汤伽瑜伽"],ans:0,exp:"康复瑜伽可能最适合初试瑜伽者练习，因为允许使用道具并学习最基本的瑜伽体位。"},
+    {stem:"经常被称为身心运动方案的主要中心活动是？",opts:["呼吸","动觉意识","恰当的编排形式","能量运动"],ans:0,exp:"呼吸经常被称为身心运动方案的主要中心活动，瑜伽、太极与气功等许多运动项目都以呼吸调节为中心。"},
+    {stem:"规律练习瑜伽与太极对代谢能产生何种益处？",opts:["葡萄糖耐量与胰岛素敏感性提高","应激激素下降","最大摄氧量增加","静息摄氧量下降"],ans:0,exp:"研究表明，规律练习瑜伽与太极对机体代谢的其中一个益处在于葡萄糖耐量与胰岛素敏感性提高。"},
+    {stem:"定期参加身心运动产生的下列益处中，对提升运动方案坚持度影响最大的一项是？",opts:["提高自我效能","提高柔韧性","提高肌力水平","提升平衡能力"],ans:0,exp:"从促进健康的观点而言，身心运动最重要的一点是促进心智发展并提高自我效能。"}
+  ]
+};
+
+// ========== 第十四章：运动与特殊人群 ==========
+const CH14 = {
+  id: "ch14", title: "第十四章：运动与特殊人群",
+  questions: [
+    {stem:"患有以下哪种疾病或异常状况的客户，制定“规律的”运动模式（不会产生运动后不适）最重要？",opts:["下背痛","慢性疲劳综合征","纤维肌痛","癌症"],ans:1,exp:"慢性疲劳综合征患者开展运动时，训练目标是制定“规律的”运动模式，从而避免出现运动后不适状况，建议低强度运动。"},
+    {stem:"在训练过程中教练发现客户突然出现协调和平衡能力丧失，经询问还得知客户视物困难。这些症状最可能的病因是？",opts:["心肌梗塞","跛行","糖尿病","中风"],ans:3,exp:"中风的警示体征包括：面部、四肢突然麻木或无力，单眼或双眼突然视物困难，突然行走出现困难、眩晕、缺乏平衡协调能力。"},
+    {stem:"超重或肥胖客户如果想减肥，每周至少应参加_____分钟中等强度的运动。",opts:["120","150","225","240"],ans:1,exp:"超重或肥胖人群每周中等强度运动累计时间不应低于150分钟，如有可能每周应运动225分钟以上。"},
+    {stem:"教练目前有一名患有骨关节炎的客户，告知自从帮女儿搬到新家后右侧膝关节就开始疼痛。上述信息应记录在客户SOAP的哪个部分？",opts:["主观观察（S）","客观观察（O）","评估（A）","计划（P）"],ans:0,exp:"主观观察是客户自己观察的结果（如身体状况报告、症状、遇到的挑战与取得的进展）。"},
+    {stem:"负重与抗阻训练活动对于下列哪些疾病或异常状况的患者最为重要？",opts:["骨质疏松","糖尿病","关节炎","下背痛"],ans:0,exp:"对骨质疏松症患者而言，负重或抗阻训练相关的机械负荷能对骨组织产生应力并刺激骨沉积，从而增加骨量和肌肉力量。"},
+    {stem:"关于下背痛客户的运动，下列描述最准确的一项是？",opts:["发展下背肌力比发展背部耐力，对于长期背部健康更重要","每天都进行背部训练，对健康产生的益处最大","起床后很快进行负重全关节脊柱运动对于健康益处最大","下背痛患者应避免仰卧抬双腿运动，而俯卧抬双腿运动则有益健康"],ans:1,exp:"尽管许多人认为每周至少训练3次，但下背痛患者如果每天都训练的话，将获得最大的健康益处。"},
+    {stem:"一名男性客户：腰围41英寸，甘油三酯140mg/dL，HDL胆固醇38mg/dL，血压128/80mmHg，空腹血糖93mg/dL。该客户目前患有代谢综合征。",opts:["正确","错误"],ans:1,exp:"代谢综合征需满足3项或以上标准。该客户只满足腰围增加与HDL胆固醇降低两项，未达代谢综合征标准。"},
+    {stem:"一名新手客户的医生就其运动形式提供以下指导：“推荐以游泳为运动形式；上身不适合进行抗阻训练类的运动项目”。该客户最有可能患有哪种疾病？",opts:["骨质疏松","关节炎","哮喘","纤维肌痛"],ans:2,exp:"游泳对哮喘患者特别有益，因为吸入肺内的水面空气比较湿润。摇臂、划船与越野滑雪等上身运动对哮喘患者通气要求过高。"},
+    {stem:"下列哪一项不属于动脉粥样硬化的常见症状？",opts:["中风","心律不齐","心绞痛","心脏病发作"],ans:1,exp:"动脉粥样硬化是心脏病、心绞痛、中风和间歇性跛行等疾病的潜在致病原因，心律不齐不属于其常见症状。"},
+    {stem:"能刺激骨量减少症和（或）骨质疏松症患者骨质变化的推荐动作重复范围是哪一项？",opts:["6-8次","10-12次","12-16次","15-20次"],ans:0,exp:"较高强度（8-RM）的肌力运动对骨骼能产生最大的益处，6-8次为此类训练最适当的动作次数范围。"},
+    {stem:"教练的一名客户患有高血压并且医生为其开具了健康许可证。下列哪一项描述最适合客户在抗阻训练方案初期使用？",opts:["主要进行自重训练，进行等长收缩，初期维持10-15秒，以后逐渐增加至30秒","进行8-10项运动，每项运动训练2组，每组重复8-12次，在70—80% 1-RM的运动强度下对全身大肌群进行锻炼","采用8-10种等重量设备进行训练，每项运动训练1组，每组重复6-8次，在80—85% 1-RM的运动强度下对全身大肌群进行锻炼","在60-70% 1-RM运动强度下用8-10项运动进行循环训练，主要采用弹力带与身体体重进行训练，训练1组，动作重复12-16次"],ans:3,exp:"低冲击性有氧运动应为主要形式，避免需要较多等长收缩的运动，自重训练强度要低、重复次数要大，如循环训练方案。"},
+    {stem:"下列运动进阶最不适合骨关节炎患者的一项是？",opts:["始终重视身体姿势对齐与运动技术","增加提起的重量，而不是增加动作重复次数","利用各种低冲击性活动，避免对关节产生过大压力","增加运动时间，而不是增加运动强度"],ans:1,exp:"力量训练应注重增加动作重复次数而不是增加重量负荷，教练可将动作重复次数从2-3次增加至10-12次。"},
+    {stem:"为了获得最大的训练效果，开展下背运动的频率应为？",opts:["2~3天/周","4~5天/周","5~6天/周","7天/周"],ans:3,exp:"尽管大家都认为每周至少应运动三天，但对于下背痛客户而言，每天开展运动将获得最大的身体益处。"},
+    {stem:"对哮喘患者进行训练时，为了降低运动性哮喘的发作几率，私人教练采取下列哪项措施最合适？",opts:["让哮喘客户在所有运动训练前额外服用吸入剂","让所有哮喘客户将运动强度控制在低中水平","运动训练课中包含较长时间的热身与冷身训练","在干热天气进行户外运动"],ans:2,exp:"由于运动性哮喘是由通气过度引起，应鼓励哮喘患者逐渐延长热身与冷身运动的时间，利用不应期减少支气管痉挛。"},
+    {stem:"教练为客户制定运动方案以减轻其下背痛时，着重进行肌力训练很重要，而不是要重点训练肌耐力。",opts:["正确","错误"],ans:1,exp:"为维持下背健康而开展的运动不应着重训练肌肉力量，而是要做不太苛求、重复次数较多的运动，以提升下腰部耐力和肌力。"},
+    {stem:"你正在为一名患有II型糖尿病的新客户设计运动方案。该客户过去几年一直久坐少动。下列最适合该客户的初期心肺运动方案是？",opts:["每周有5-6天散步，每次散步40分钟，自感用力度11-13级，目标是每次训练60分钟","每周有3-4天进行骑单车运动，每次骑40分钟，自感用力度13-15级，目标是每次训练60分钟","每周有5-6天散步，每次散步10-20分钟，自感用力度11-13级，目标是每次训练40-60分钟","每周有3-4天进行骑单车运动，每次骑单车10-20分钟，自感用力度13-15级，目标是每次训练40-60分钟"],ans:2,exp:"推荐每周进行5-6天低至中等强度的有氧运动，RPE 11-16级，每次运动40-60分钟，运动初期可能需要多次进行10分钟短时间运动。"},
+    {stem:"教练的一名客户患有I型糖尿病，每次运动前都要检查血糖水平。下列哪一项运动前血糖水平需要延迟运动直到血糖水平得到控制？",opts:["88毫克/分升","110毫克/分升","155毫克/分升","215毫克/分升"],ans:0,exp:"运动前后应测量血糖水平。如果运动前血糖水平低于100毫克/分升，则应推迟运动。"},
+    {stem:"客户的医生就新手客户的运动方案提供了以下运动指南“最好采用自感用力度RPE11-16级（6-20级）的训练强度”。该客户最有可能患有哪种疾病？",opts:["高血压","癌症","II型糖尿病","纤维肌痛"],ans:2,exp:"II型糖尿病患者可以参加中等强度的运动，即RPE 11-16级。其他三种疾病都要求RPE 9-13级的中等训练强度。"},
+    {stem:"规律运动对血脂异常会产生怎样的效应？",opts:["只进行运动也能显著降低总胆固醇水平","规律运动能提高LDL水平","运动后12小时内甘油三酯水平可维持在较低水平","规律运动能降低LDL水平"],ans:3,exp:"研究表明，对心血管疾病患者进行运动干预，平均能降低LDL胆固醇水平3.0-6.0毫克/分升。"},
+    {stem:"下列哪一项描述符合代谢综合征的确诊标准？（选项：42岁女性，腰围36英寸，甘油三酯133mg/dL，HDL 47mg/dL，血压128/87mmHg，空腹血糖107mg/dL）",opts:["33岁男性符合条件A","42岁女性符合条件B","48岁男性符合条件C","51岁女性符合条件D"],ans:1,exp:"满足3种或以上条件即可诊断为代谢综合征：腰围增加、甘油三酯升高、HDL下降、血压升高、空腹血糖升高。该42岁女性满足腰围、血压、空腹血糖3项标准。"}
+  ]
+};
+
+// ========== 第十五章：常见的肌肉骨骼损伤与运动提示 ==========
+const CH15 = {
+  id: "ch15", title: "第十五章：常见的肌肉骨骼损伤与运动提示",
+  questions: [
+    {stem:"运动员出现下列哪种损伤主要是因为训练不当造成的？",opts:["髌骨疼痛症候群","髌下跟腱炎","跟腱炎","髂胫束症候群"],ans:3,exp:"髂胫束症候群（ITBS）常发于15-50岁运动活跃人群，主要是长跑、自行车、排球和举重等项目训练不当引起。"},
+    {stem:"肩胛骨平面的位置是？",opts:["与额状面一致","位于矢状面外侧30度处","与矢状面一致","位于额状面前侧30度处"],ans:3,exp:"肩胛骨平面是指肩关节位于矢状面与额状面间30度的位置。"},
+    {stem:"急性股后肌群拉伤客户的运动禁忌包括？",opts:["教育客户如何使用RICE原则，以此作为早期干预策略","对运动方案进行修改，着重对非损伤部位进行训练","每次拉伸股后肌群要维持60秒钟","如果疼痛迁延不退，教练要推荐客户就医"],ans:2,exp:"对急性损伤部位进行拉伸是运动禁忌，可引起二次损伤。"},
+    {stem:"客户发生大转子滑囊炎，做恢复运动时一般应避免_____________。",opts:["压迫髂前上棘的俯卧位运动体位","拉伸髂胫束复合体","压迫髋关节外侧的侧卧运动体位","强化深层髋关节回旋肌"],ans:2,exp:"患有大转子滑囊炎的客户应避免压迫髋关节外侧的侧卧运动体位，因为患处可能还会产生压痛。"},
+    {stem:"为了使鞋子合脚，鞋子与最长的脚趾之间要留多大空间？",opts:["1/2英寸","2公分","食指宽","拇指指甲长"],ans:2,exp:"最长的脚趾端与鞋端要留一食指宽的空间，可容纳足尺寸增加、袜子与足部在鞋内的动作。"},
+    {stem:"对有髂胫束综合征病史的客户进行训练时，哪个作用于髋关节的肌群最可能薄弱无力？",opts:["髋屈肌","髋伸肌","髋内收肌","髋外展肌"],ans:3,exp:"患有髂胫束综合征的客户可能存在髋外展肌薄弱无力、髂胫束缩短并出现压痛等状况。"},
+    {stem:"肱骨外上髁炎通常被称为 _________。",opts:["高尔夫肘","跳者膝","网球肘","跑者膝"],ans:2,exp:"肱骨外上髁炎通常叫做“网球肘”，是靠近肱骨外上髁的腕伸肌腱因过度使用或反复外伤引起的病症。"},
+    {stem:"膝关节最常报道的膝关节损伤是指 _______________受损。",opts:["前十字韧带","内侧副韧带","髌骨","半月板"],ans:3,exp:"膝关节最常报道的损伤是半月板损伤，半月板发挥吸震、稳定、关节吻合、润滑及本体感受等功能。"},
+    {stem:"损伤发生后，愈合的第一阶段是？",opts:["重塑期","炎症期","增生期","纤维形成期"],ans:1,exp:"愈合的第一个阶段是炎症期，通常持续4-6周，重点是固定损伤部位并开始愈合过程。"},
+    {stem:"客户是一名大转子滑囊炎患者，医生给出了一些建议。请问该客户的训练重点是强化哪个肌群？",opts:["股后肌群","臀肌","股四头肌","髂胫束复合区"],ans:1,exp:"对大转子滑囊炎患者进行训练时，强化臀部肌群与髋部深层回旋肌群对维持适宜肌力水平非常重要。"},
+    {stem:"客户外侧踝关节扭伤并且处于康复期，教练为他设计运动方案时，很重要的一点是初期运动要包含侧向动作，然后再进阶至直线-平面运动，最后再执行多向性动作。",opts:["正确","错误"],ans:1,exp:"应先练习前向跑等直线-平面动作，然后训练侧步等侧向动作，最后进阶至多向性动作。"},
+    {stem:"拉伸哪块肌肉有助于缓解胫骨内侧应力综合征（MTSS）和（或）前侧外胫夹的症状？",opts:["腓肠肌、比目鱼肌与腓骨肌群","比目鱼肌与小腿前筋膜室","胫骨前肌与足底筋膜","胫骨后肌与小腿外侧筋膜室"],ans:1,exp:"对小腿前筋膜室和小腿肌（尤其是比目鱼肌）进行拉伸，能有效缓解胫骨内侧应力综合征相关症状。"},
+    {stem:"一位跟腱炎患者目前处于康复期并且希望防止复发，最重要的是要在运动方案中包含哪些运动？",opts:["缓慢克服重力练习趾屈动作以对小腿肌群进行离心收缩强化训练并对小腿肌进行拉伸","对小腿肌群进行高强度力量训练并对拇长屈肌与胫骨后肌进行拉伸","缓慢地克服重力练习背屈动作以对小腿肌群进行离心收缩强化训练并对小腿肌进行拉伸","对小腿与下肢进行全面的拉伸与等长收缩力量训练"],ans:2,exp:"对小腿肌群进行缓慢离心强化收缩有益于缓解症状（如脚跟抬起进阶到台阶边缘），跟腱炎患者进行离心运动有助于减少疼痛并提升肌力。"},
+    {stem:"发生腕管综合征时常常会压迫哪条神经？",opts:["正中神经","尺神经","桡神经","肌皮神经"],ans:0,exp:"腕管综合征是腕关节最常发生的压迫症状，最终压迫正中神经。"},
+    {stem:"下列哪一项不属于拉伸的禁忌症？",opts:["肥胖","患处疼痛","出现骨质疏松","关节肿胀"],ans:0,exp:"拉伸禁忌症包括：骨折愈合期、急性软组织损伤、术后、关节活动度过大、感染部位、患处疼痛、骨质疏松、关节肿胀等，肥胖不属于禁忌症。"},
+    {stem:"下列哪一项结构因为外侧筋膜与髌骨相连，因而过于紧张可引起髌股疼痛综合征？",opts:["髂胫束复合体","股后肌群","腓骨长肌","股二头肌"],ans:0,exp:"肌肉过紧和肌肉长度不足与髌股疼痛综合征有关，髂胫束复合体（如臀肌）过紧可导致髌骨外侧承受过大外力。"},
+    {stem:"腕关节伸肌靠近起点处发炎常被称为__________。",opts:["肘腱炎","网球肘","高尔夫球肘","鹰嘴突滑囊炎"],ans:1,exp:"肱骨外上髁炎，常称为“网球肘”，是肱骨外上髁腕伸肌近起点处肌腱因使用过度或反复外伤引起的发炎疼痛。"},
+    {stem:"哪种损伤分为纵向、斜向、横向和压迫性等类型？",opts:["应力性骨折","扭伤","粘液囊炎","外胫夹"],ans:0,exp:"应力性骨折分为纵向、斜向、横向和压迫性等4种类型，常见于长跑运动员、田径运动员和球类运动员。"},
+    {stem:"对有足底筋膜炎病史的客户进行训练时，最重要的是要对____________进行拉伸练习。",opts:["腓肠肌、比目鱼肌与足底筋膜","足底筋膜、腓骨长肌与腓骨短肌","腓肠肌、胫骨后肌与胫骨前肌","足底筋膜、胫骨前肌与趾长屈肌"],ans:0,exp:"研究显示，拉伸腓肠肌、比目鱼肌与足底筋膜，有利于缓解足底筋膜的症状。"},
+    {stem:"客户诉说自己每天早晨起床后刚走几步就感觉脚后跟疼痛难忍，然后在房间里继续行走疼痛就会消散。这种疼痛最有可能的病因是？",opts:["足底筋膜炎","跟腱炎","踝关节扭伤","髌下肌腱炎"],ans:0,exp:"足底筋膜炎患者通常主诉起床后足底以及脚后跟内侧疼痛加重，但活动10-15分钟后疼痛减轻。"},
+    {stem:"客户主诉睡眠中腕部疼痛，运动时握力丧失。这种症状最可能的病因是？",opts:["大转子滑囊炎","髂胫束症候群","肱骨内上髁炎","腕管综合征"],ans:3,exp:"腕管综合征的症状包括夜间或清晨疼痛、握力丧失抓握物体掉落、掌心大拇指食指中指麻木或刺痛感。"}
+  ]
+};
+
+// ========== 第十六章：紧急救助程序 ==========
+const CH16 = {
+  id: "ch16", title: "第十六章：紧急救助程序",
+  questions: [
+    {stem:"心脏骤停时最常见的心脏节律是？",opts:["房颤","心动过缓","室颤","室性心动过速"],ans:2,exp:"心脏骤停时最常见的节律是心室纤维性颤动（室颤），心脏出现痉挛性颤抖，心室无法充分充盈与排空。"},
+    {stem:"当你怀疑客户出现轻度低血糖事件时，应采取下列哪些行动？",opts:["帮助客户坐下，如果客户能吞咽的话，给他/她喝一些含糖饮料","呼叫紧急医疗救助人员，开始实施心肺复苏并进行自动体外除颤","帮助客户坐下，如果有胰岛素的话就注射胰岛素","立即呼叫紧急医疗救助人员并持续观察客户"],ans:0,exp:"如果客户意识清醒并能吞咽，可喂服20-30克碳水化合物，如含糖饮料，从而将血糖升至正常水平。"},
+    {stem:"短暂性脑缺血（TIA）与中风的区别是什么？",opts:["短暂性脑缺血是由不同的生理机制引起","中风不可治愈，但是短暂性脑缺血可治愈","短暂性脑缺血的体征持续时间少于一小时","与中风相比，短暂性脑缺血严重程度较低并且不那么可怕"],ans:2,exp:"短暂性脑缺血与中风症状类似，但只引起短暂性身体失能，症状持续时间通常低于1小时，10-15分钟内症状就会缓解。"},
+    {stem:"下列哪一项体征或症状是罹患热中暑的关键指征并需要紧急治疗？",opts:["体温升高","精神状态改变","皮肤红热、多汗","疲劳、无力与头痛"],ans:1,exp:"热中暑的体征与症状包括精神状态改变，比如易怒与攻击性，可发展为情感淡漠、精神混乱、反应消失甚至昏迷。"},
+    {stem:"人们在紧急心脏事件不愿意进行心肺复苏的主要原因是什么？",opts:["担心伤者肋骨断裂会引起法律诉讼","不确定自己能否正确执行心肺复苏术","担心没必要执行心肺复苏术","与陌生人口唇接触感觉别扭"],ans:1,exp:"对心脏病发作见证者的采访发现，旁观者不打算实施心肺复苏的主要原因是恐慌，害怕自己不能很好地执行。"},
+    {stem:"下列哪一项软组织损伤的治疗属于私人教练的执业范围？",opts:["推荐客户服用非甾体抗炎药（NSAIDs）","对软组织患处进行按摩","对软组织患处进行超声检查","教育客户如何使用RICE原则正确地敷冰"],ans:3,exp:"软组织损伤一般采用RICE原则，损伤的诊断与治疗超出了私人教练的执业范围，但教育客户正确敷冰属于执业范围。"},
+    {stem:"为了最大程度地降低心血管事件的风险，健身场地采取的最重要的措施是？",opts:["让每一位会员完整填写免责声明和知情同意书","要求所有会员在开始运动方案前都要接受体检","让所有会员完整填写一份病史表格","要求所有会员开始运动方案时一律采用低中强度训练"],ans:2,exp:"健身房对所有新会员都应筛查心血管事件风险，可使用简单调查问卷如PAR-Q，有助于识别需要转介就医的高风险个体。"},
+    {stem:"下列属于心脏病发作的体征与症状的是？",opts:["突发剧烈头痛，一侧身体乏力","胸腔内及周围出现刺痛","突然丧失意识，呼吸与脉搏消失","胸闷，可被误判为胃灼热"],ans:3,exp:"心脏病发作由冠脉堵塞所致，患者常将胸痛描述为胸部压迫或挤压感，可被误判为胃灼热或消化不良。"},
+    {stem:"脊柱的哪个节段最容易发生灾难性损伤？",opts:["颈段","胸段","腰段","骶椎"],ans:0,exp:"脊柱最上段是颈段，由7块颈椎构成，这部分脊髓最灵活也最脆弱，损伤的可能性最大。"},
+    {stem:"如果你发现一个人在运动时突然跌倒，你首先应该怎么做？",opts:["向此人询问引起损伤的原因","查看任何医用饰品以判断跌倒的原因","评估伤者的脉搏与血压","评估此人意识是否清醒并询问他/她是否OK"],ans:3,exp:"伤者意识清醒时，营救者应自我介绍，询问伤者发生了什么问题，并询问是否需要帮助（须获得口头同意才能实施救助）。"},
+    {stem:"关于1996年发布的《健康保险流通与责任法案》（HIPAA），以下描述正确的一项是？",opts:["要求对所有健康档案保密，因而能保障个人隐私","要求人们向其医生分享健康信息","要求人们向其保险代理机构分享健康信息","确保通过电子数据库可随时获取人们的健康记录信息"],ans:0,exp:"HIPAA规定要控制个人健康信息的存储以确保个人隐私。"}
+  ]
+};
+
+// ========== 第十七章：法律指南与职业责任 ==========
+const CH17 = {
+  id: "ch17", title: "第十七章：法律指南与职业责任",
+  questions: [
+    {stem:"教练不作为导致客户受伤，但客户本身在自己受伤中也扮演着一定的角色，用于描述这种情况的法律术语是？",opts:["共同过失","重大过失","完全过失","相对过失"],ans:0,exp:"在有些情况下，客户可能也对潜在损伤负有部分责任，这种情况称为共同过失。"},
+    {stem:"私人教练在下列哪种情况下最可能被判玩忽职守罪？",opts:["教练下背疼痛时监督客户训练","客户在赶往健身房训练的途中受伤","当客户因训练不当而受伤时，教练正在同另外一名会员聊天","客户按照运动方案进行训练，但所有运动都增加2组结果引起损伤"],ans:2,exp:"如果教练未采取行动（不作为）导致客户受伤，即构成过失行为，如客户练习卧推时没有在旁边看护。"},
+    {stem:"哪种类型的企业是私教行业最常见的经营模式？",opts:["S类公司（可按合伙企业纳税）","C类公司","有限责任公司","有限责任合伙企业"],ans:0,exp:"S类公司是私教行业最常见的企业类型，其经营模式与个人独资企业、合伙企业都不一样。"},
+    {stem:"私人教练为个人和（或）团体在客户的家里或户外进行培训前，应与当前的保险公司核实其保险范围是否包括在这些环境中培训，或者是否需要对现有的职业责任险增加________________。",opts:["一般责任险","要人保险","伞式责任保险","特定保险附约"],ans:3,exp:"一般责任险的范围可能不包括在私人住宅处训练，要确保已投保特定附加险覆盖这些活动。"},
+    {stem:"在对与特定活动有关的损伤风险进行评估时，私人教练发现损伤的发生率很低，损伤的严重程度为重度或致命。对于上述风险，最好的处理策略是？",opts:["规避风险","转移风险","降低风险","保留风险"],ans:1,exp:"最好的处理策略是转移风险，通过弃权声明和保险等方式将风险转移给他人。"},
+    {stem:"私人教练从事私教培训时，万一发生意外引起法律诉讼，在哪种企业结构下损失个人资产的风险最大？",opts:["C类公司","独资企业","有限责任公司","S类公司"],ans:1,exp:"独资企业没有公司面纱保护，企业行动与企业主个人责任密不可分，若企业负债需变卖个人资产偿付。"},
+    {stem:"客户在哪种书面文件中承认自己已经明确了解参加某项活动伴随的风险？",opts:["免责声明","知情同意书","参加协议","免责条款"],ans:1,exp:"可用知情同意书来证明客户承认已被特别告知参加某种运动的相关风险。"},
+    {stem:"私人教练从健身房的独立合同工转变为正式员工，最可能放弃的是？",opts:["健身房扣除的社保税","健身房投的医疗保险","被开除前需要健身房给出正当理由","设定时间表与价格的灵活性"],ans:3,exp:"制定的时间表、要求需要使用特定资料与监督程序往往反映雇佣关系，成为正式员工需放弃灵活性。"},
+    {stem:"伞式责任保险单为被保险人已经购买的所有其它保险提供附加保险。",opts:["正确","错误"],ans:0,exp:"伞式责任保险单为被保险人已购买的其它保险（如汽车保险、住房保险、职业责任保险等）提供附加保险。"},
+    {stem:"下列哪种行为会违反知识产权法？",opts:["在小组私教培训时使用专门为健身房设计的音乐","ACE认证专业人员将ACE证书列在自己的名片上","训练过程中允许私教客户自己带音乐播放","使用ACE的商标来推销营养品、DVD或ACE认证私人教练销售的设备"],ans:3,exp:"ACE认证专业人员不得在销售的产品或商品上使用ACE的名称或商标来推销自己的服务。"},
+    {stem:"哪种企业因兼具有限责任与S类公司的转移课税等优势，因而创立和经营起来更容易？",opts:["合伙企业","C类公司","有限责任合伙企业","独资企业"],ans:2,exp:"有限责任公司（LLC）或有限责任合伙（LLP）在很多方面类似S类公司，成立时提交文件比较简单。"},
+    {stem:"如果原告对自己的损伤负有部分责任，那么依照什么标准可能无法依法得到任何补偿？",opts:["严重过失","相对过失","共同过失","转承过失"],ans:2,exp:"在美国某些州，如果原告对损伤负有部分责任，依照共同过失法可能无法依法得到任何补偿。"},
+    {stem:"在客户的家里开展训练时，私人教练必须使用健身房专用的录音，否则就会有违反版权法的风险。",opts:["正确","错误"],ans:1,exp:"在客户家里开展训练时，教练可让客户为训练提供音乐，属于个人、非商业目的，不涉及侵权。"},
+    {stem:"下列哪种企业经营模式的主要不利条件是双重收税？",opts:["一般合伙","特许经营","C类公司","有限责任公司/有限责任合伙公司"],ans:2,exp:"C类公司首先要纳税，税后利润分配给股东，股东还须缴纳红利税，因此面临双重纳税。"},
+    {stem:"下列哪种商业行为最可能使一个私人教练被不恰当的视为独立合同工？",opts:["允许独立合同工自行设定时间表","要求所有的私人教练遵守相同的评估标准与方案编排程序","允许独立合同工自行定价","要求所有的私人教练为自己投职业责任险"],ans:1,exp:"制定的时间表、要求使用特定资料与监督程序往往能反映雇佣关系，而不是独立合同工的特征。"},
+    {stem:"当与家庭成员成立一般合伙企业时，50-50平分所有权是个好主意，这样双方合伙关于经营方式有平等的话语权。",opts:["正确","错误"],ans:1,exp:"大部分律师不建议合伙企业平分所有权，因为经营决策须经多数（50.1%）企业主批准，五五分容易陷入僵局。"},
+    {stem:"独资公司的潜在优势不包含下列哪一项？",opts:["正式的文书文件非常少","所有的盈利都归业主所得","业主有最终的决定权","公司屏障/企业面纱可以保护业主免受破产或损失"],ans:3,exp:"独资企业没有公司屏障保护，企业行动与企业主的个人责任密不可分。"},
+    {stem:"独资企业和合伙企业的企业主还可以用企业当年亏损额来抵销企业主其它收入产生的利润。这个例子属于 ______________。",opts:["双重收税","转移课税","公司屏障","有限责任"],ans:1,exp:"独资企业和合伙企业按较低个人所得税率纳税，企业主可用当年亏损额抵销其它收入产生的利润，即转移课税。"},
+    {stem:"确保客户与教练在各个方面都建立适当的关系，最好的方法是？",opts:["书面合同","知情同意书","免责声明","口头协议"],ans:0,exp:"书面合同对客户与教练的关系进行详细定义，是确保双方建立适当关系的最好方法。"},
+    {stem:"下列哪种行为活动超出私人教练的执业范围？",opts:["利用健康史表格对客户进行筛查，从而作出适当的安排或转介","识别可能会对安全、高效运动产生限制的身体或心理问题","恰当地对客户进行体适能评估","为客户提供进阶训练的运动处方"],ans:3,exp:"许多州规定只有持照医生才能开运动处方，教练只能设计运动方案，不能开运动处方。"},
+    {stem:"私人教练所投的职业责任险的推荐金额为？",opts:["200,000美元","500,000美元","1,000,000美元","2,000,000美元"],ans:2,exp:"ACE推荐投保金额不低于100万美元，因为医疗费用有时可高达数十万美元。"}
+  ]
+};
+
+// ========== 第十八章：私教业务基础 ==========
+const CH18 = {
+  id: "ch18", title: "第十八章：私教业务基础",
+  questions: [
+    {stem:"销售那些成果（如减重或备战赛事）明确的私教课程的优势是什么？",opts:["有助于提升客户的动机，因为这些私教训练方案一般都能保证取得成功","有助于淘汰那些不太可能长期坚持参加运动方案的客户","允许私人教练在同一运动方案中同时训练多名客户，有助于节省时间与精力","有助于客户坚持参加运动方案，因为客户开始运动方案时便已具备明确的运动目标"],ans:3,exp:"具有明确结果的训练方案能帮助客户坚持参加常规训练，因为客户开始运动方案时便已具备明确的运动目标。"},
+    {stem:"下列哪一项不属于企业规划中营销计划的关键内容？",opts:["私教培训业务的需求","提供的训练类型或训练品牌","关于私教培训益处的宣传计划","企业准入障碍"],ans:3,exp:"企业准入障碍（成本花销，如租金、设备、员工和营销费用）需在企业规划的风险分析部分探讨，不属于营销计划内容。"},
+    {stem:"下列属于直属员工不利条件的一项是？",opts:["私人教练必须按季度缴纳税费","私人教练独自承担所有的营销成本","私人教练很有可能必须按照约定至少工作几个小时","私人教练对于健身设施可能不需要任何投入"],ans:2,exp:"许多雇主都要求直属员工每次上班必须工作最低几个小时，无法满足要求就终止雇佣关系。"},
+    {stem:"私人教练在编制个人预算时，推荐第一步进行_________？",opts:["列出每月的全部开支","列出每月的全部收入","确定每课堂的收费金额","确定每周的培训次数"],ans:0,exp:"编制个人预算的第一步是列出月度支出清单，包括固定成本和可变成本。"},
+    {stem:"下列哪一项提问体现的是私人教练专注于客户的需求？",opts:["“此前阻碍您实现目标的因素是什么？”","“对于小组私教培训课产生的友情，您感兴趣吗？”","“您觉得我们的私教服务怎么样？”","“对于我们提供的减重训练方案，您是否感兴趣？”"],ans:0,exp:"销售话术重点在于关注客户的需求及教练如何提供帮助，探寻此前阻碍客户实现目标的因素是关键问题。"},
+    {stem:"教练因为完成季度指标而获得一笔奖金。请问该私人教练是直接雇员还是独立合同工的可能性更大？",opts:["直属员工","独立合同工"],ans:0,exp:"除按小时支付工作薪水和培训授课费用，许多公司还会以奖金形式对直属员工予以奖励。"},
+    {stem:"在财务方面，小组私教培训对于教练和客户来说都有利。",opts:["正确","错误"],ans:0,exp:"提供小组培训服务的教练能在降低客户人均成本的前提下增加每小时收入。"},
+    {stem:"私人教练应在企业规划的哪个部分识别自己的营业模式，与相同领域其他健身工作室相比有何不同与独特之处？",opts:["执行概要","企业介绍","经营计划","营销计划"],ans:1,exp:"企业介绍部分要明确经营模式，指出相对于竞争者的不同或独特之处，并介绍当地市场与管理团队。"},
+    {stem:"私人教练进行SWOT分析时列出这一条：“该健身俱乐部无法满足当前潜在私教客户的数量需求”，这条分析属于？",opts:["优势","缺点","机会","风险"],ans:2,exp:"在SWOT分析中，标示为“机会”的项目是吸引新客户或拓展业务的所有机会。"},
+    {stem:"私人教练使用下列哪种策略吸引潜在新客户的效果最差？",opts:["每周教几种团体运动课","针对流行的健身话题每月提供一堂免费赠送的讨论课","张贴一份充满个人运动成就的教练简历","为当地的赛跑项目提供一堂免费的团体训练课"],ans:2,exp:"吸引客户涉及与客户沟通并阐述如何帮助他们实现目标，宣传自己的运动成就几乎起不到吸引客户的作用。"},
+    {stem:"如果潜在客户不能将自己的时间调整至与教练的时间一致，最好的办法是？",opts:["教练应调整自己的时间安排以便与客户的时间安排相符","教练应该让客户知道自己无法提供培训","教练应制定一份客户能够独立执行的运动方案","教练应将此客户介绍给相同健身房的其他教练"],ans:3,exp:"建立转介关系并具备转介业务的自信，有助于教练树立专业的形象。"},
+    {stem:"让朋友或家庭成员直接向你支付私教培训服务费（而不是通过健身房收费）对于收入是一种良好的补充。",opts:["正确","错误"],ans:1,exp:"这种做法违反了ACE职业道德准则。"},
+    {stem:"下列属于独立合同工有利条件的选项是？",opts:["健身房能提供晋升机会","健身房承担新会员入会的全部营销成本","健身房提供健康保险和其他福利待遇","健身房允许教练设定所有培训的收费标准"],ans:3,exp:"独立合同工模式允许教练自行决定培训收费标准，其他三个选项都是直属员工的有利条件。"},
+    {stem:"大多数购买决策，特别是像私教培训等服务项目，是受财务状况驱动的。",opts:["正确","错误"],ans:1,exp:"购买决策是受情感驱动的，虽然潜在客户会使用逻辑思考，但还是会按照情绪来支配行动。"},
+    {stem:"客户参加小组私教培训时最可能将下列哪一项视为一种限制因素？",opts:["另一名小组成员总是要求教练给与个人关注","受到小组其他成员给予的社会支持和鼓励","由于小组成员之间的积极比赛互动，结果剧烈运动带来的不适感消失","由于小组运动气氛活跃，因此个人积极坚持参加运动训练课"],ans:0,exp:"总是要求个人关注的客户是小组训练中业已确定的限制因素。"},
+    {stem:"在相同市场下，私人教练存在着直属员工和独立合同工两种。哪种教练每堂课培训费的收入可能更高？",opts:["直属员工","独立合同工"],ans:1,exp:"尽管许多雇主会提供有竞争力的每堂课培训费，但这些费用通常低于教练独立工作的收入。"},
+    {stem:"忙碌的私人教练在日常业务中经常容易忽略的活动是？",opts:["对客户进行训练","客户管理","运动","营销"],ans:2,exp:"作为私人教练，维持健康生活方式并起到模范作用（包括参加运动方案）很重要，但新教练常忙到抽不出时间运动。"},
+    {stem:"公司使命与业务模式应在企划书的哪个部分进行详细描述？",opts:["企业介绍","经营计划","执行概要","营销计划"],ans:0,exp:"企划书的企业介绍部分详细介绍公司使命、业务模式、当前市场状况、企业如何满足市场需要以及管理团队。"},
+    {stem:"独立合同工在下列哪种情况下存在着被起诉风险？",opts:["从健身房租赁培训场地","在客户家中使用客户的健身器材对客户进行训练","教练觉得某健身房的做法不符合职业道德而决定不在该健身房对客户进行培训","在不通知或支付健身房业主的情况下，在健身房对客户进行收费培训"],ans:3,exp:"私下交易（未经通知或支付健身房业主的情况下收费培训）可能被起诉为入店行窃或非法入侵罪，违反ACE职业道德准则。"},
+    {stem:"要成功销售培训课程，私人教练除了要向客户推销私教服务外，还必须具备哪些其他技能？",opts:["设计良好的运动方案","能主动要求客户购买课程","着装职业","维持较高的体适能水平"],ans:1,exp:"销售过程要求教练让潜在客户购买训练课，向私人教练投资，因此主动要求客户购买课程是关键技能。"},
+    {stem:"私人教练为客户明确私教培训的质量期望，有助于与客户立即建立情感联系，最好的方法是？",opts:["写一份详细的企业介绍","开发强大的品牌","写一份出色的执行概要","制定一份合理的经营计划"],ans:1,exp:"品牌是服务或产品的象征，通过创建品牌来确定客户可期待的私教服务质量，是与客户建立情感联系的重要一步。"}
+  ]
+};
+// ========== 应用运动机能学基础 ==========
+const T01 = {
+  id: "t01", title: "应用运动机能学基础",
+  questions: [
+    {stem:"静态平衡运动项目通常涉及_______________。",opts:["增加支撑面的宽度","减少支撑面的宽度","将重心线移出支撑面的范围外","在旋转运动中移动重心线"],ans:1,exp:"教练可以减少支撑面积来刺激客户对平衡能力需求产生适应；增加支撑面积反而降低了平衡难度。"},
+    {stem:"假定提起的物体重量相同，客户将重物靠近身体会增加工作关节的阻力。",opts:["正确","错误"],ans:1,exp:"要增加运动阻力，需要将重物移离工作关节。运动疲劳时，为减轻阻力，可将重物靠近工作关节。"},
+    {stem:"客户练习侧卧抬腿动作时，下侧腿得到强化的肌肉或肌群是？",opts:["内收肌群","外展肌群","内旋肌群","外旋肌群"],ans:0,exp:"侧卧抬腿动作过程中，下侧腿的内收肌群在抬腿期进行向心收缩，在下放过程中做离心收缩。"},
+    {stem:"从解剖姿势的角度来讲，下列属于多运动面动作的例子是哪一项？",opts:["肩胛骨下抑","前臂旋前（即内旋）","踝关节背屈","拇指对掌"],ans:3,exp:"拇指对掌是灵长目和人类特有的动作功能，拇指与小指形成半圆。其他选项均属于单运动面动作。"},
+    {stem:"在肢体活动破坏脊柱稳定性之前，下列哪一项肌肉（与多裂肌共同）就脊椎关节位置的信息向中枢神经系统进行反馈过程中发挥重要作用？",opts:["腹横肌","腹直肌","腹内斜肌","腹外斜肌"],ans:0,exp:"腹横肌与多裂肌共同激活，在肩关节和腿部产生动作前分别提前30和110毫秒被激活，为脊椎关节位置反馈提供信息。"},
+    {stem:"“肩胛带” 是_______的非正式术语。",opts:["胸锁关节","肩锁关节","肩甲胸壁关节","盂肱关节"],ans:2,exp:"肩胛带是肩甲胸壁关节的非正式称呼，由肌肉和筋膜将肩胛骨与胸廓连接起来。"},
+    {stem:"下列哪种排列形状的肌肉发力水平最低，但收缩速度最快？",opts:["单羽肌","双羽肌","多羽肌","纵肌"],ans:3,exp:"纵肌与羽状肌相比更长更薄，肌纤维与拉伸线平行，这种形状的肌肉收缩速度更快但产生的力较小。"},
+    {stem:"牛顿运动定律的哪一条定律描述如下？静止物体总保持静止状态，运动的物体总保持运动状态，除非有外力施加。",opts:["万有引力定律","作用力与反作用力定律","惯性定律","加速度定律"],ans:2,exp:"牛顿第一定律又叫惯性定律，物体的惯性与其质量成正比关系，启动或停止重物比轻物更困难。"}
+  ]
+};
+
+// ========== 运动生理学 ==========
+const T02 = {
+  id: "t02", title: "运动生理学",
+  questions: [
+    {stem:"某人使用弹力带进行极短时间（每次拉伸少于2秒钟）的股后肌群拉伸练习，重复拉伸8次为一组。此人在使用哪种柔韧性训练技巧？",opts:["弹震式拉伸","动态拉伸","本体感受神经肌肉易化术","主动式隔离拉伸"],ans:3,exp:"主动式隔离拉伸不是维持15-30秒，而是拉伸时间绝不超过2秒钟，然后释放拉力回复起始姿势，重复数次。"},
+    {stem:"哪种激素在身体活动中能扩张呼吸道，并能降低消化能力和膀胱排空？",opts:["胰岛素","去甲肾上腺素","肾上腺素","皮质醇"],ans:2,exp:"肾上腺素能够扩张呼吸道以促进气体进出肺部，另外在运动过程中还能减少消化活动与膀胱排空。"},
+    {stem:"下列哪一种宏量营养素储存的能量可通过无氧氧化产生三磷酸腺苷（ATP）？",opts:["蛋白质","脂肪","胆固醇","碳水化合物"],ans:3,exp:"碳水化合物是唯一能通过无氧氧化产生ATP的宏量营养素，这在最大强度运动时具有重要意义。"},
+    {stem:"下列哪一项是规律抗阻运动特有的身体适应体现？",opts:["呼吸容量变大","心输出量的泵血效率提高","骨密度变大","瘦体重增加"],ans:2,exp:"研究表明，负重训练能提高骨密度，是预防骨质疏松（尤其是女性）的关键因素。"},
+    {stem:"人体内哪种缓释激素能刺激机体从脂肪组织中动员游离脂肪酸，在肝脏中动员葡萄糖合成并降低葡萄糖在细胞中的利用率？",opts:["生长激素","胰高血糖素","胰岛素","皮质醇"],ans:3,exp:"皮质醇是肾上腺皮质释放的糖皮质激素，能动员游离脂肪酸、动员葡萄糖合成（糖异生）并降低细胞葡萄糖利用率。"},
+    {stem:"在运动的哪个阶段，储备的磷酸原耗尽，残存的乳酸从血液中清除，并且代谢率下降？",opts:["运动刚开始时","身体达到稳态状态时","在稳态式训练过程中","运动训练结束后"],ans:3,exp:"运动结束后（EPOC）产生的能量用于补充耗尽的磷酸原、清除乳酸，并帮助身体恢复至稳态。"},
+    {stem:"在客户出现一般性适用症候群的哪个阶段，可观察到肌肉体积（大小）与力量逐渐增大？",opts:["休克期","适应期","警觉反应期","衰竭期"],ans:1,exp:"适应期（抵抗期）通常从第4周至第6周，此期特点是肌肉体积与力量逐渐增大。"},
+    {stem:"心输出量的定义为：心脏每次搏动泵出的血液量。",opts:["正确","错误"],ans:1,exp:"心脏每次搏动泵出的血液量叫做心搏量。心输出量是心搏量与心率的乘积，即心脏每分钟的泵血量。"},
+    {stem:"窦房结有时称为心脏的起搏点，位于心脏的那个腔室内？",opts:["右心房","右心室","左心房","左心室"],ans:0,exp:"窦房结位于右心房的后壁，而房室结则位于右心房心内膜下。"},
+    {stem:"在稳态式运动过程中，不属于机体维持血容量的方式为哪一项？",opts:["提高心率值","提高心搏量","增强非工作肌的血管收缩作用","释放血管加压素和醛固酮"],ans:1,exp:"机体维持血容量的方式包括提高心率、非工作肌血管收缩、释放血管加压素和醛固酮，而非提高心搏量。"},
+    {stem:"低强度运动是减肥的最佳运动方式，因为与高强度运动相比，低强度运动燃烧的脂肪比例更高。",opts:["正确","错误"],ans:1,exp:"燃烧的总热量才是减肥的决定因素。高强度运动总热量更高，虽然低强度运动脂肪供能比例更高，但总脂肪消耗量较少。"},
+    {stem:"无论在炎热还是寒冷环境中，按照身体丢失体液量补液都是一种重要的适用原则。",opts:["正确","错误"],ans:0,exp:"按照身体丢失体液量补液是重要原则，寒冷环境中虽然体液流失不明显，但呼吸也会大量流失水分。"},
+    {stem:"人体摄取营养素中，________只有非常少的一部分用于能量供给。",opts:["脂肪","碳水化合物","蛋白质","纤维素"],ans:2,exp:"除非在限制热量摄入的极端状况下，蛋白质很少用于能量供给，主要用于生长发育、组织修护或排出体外。"},
+    {stem:"下列哪种物质能促进甘油三酯的分解从而协助维持血糖水平？",opts:["血管加压素","皮质醇","去甲肾上腺素","雌激素"],ans:1,exp:"皮质醇在长时间训练运动中能促进蛋白质和甘油三酯的分解，从而在维持血糖稳定方面起着重要作用。"},
+    {stem:"运动者达到第二通气阈（VT2）后，潮气量开始下降。",opts:["正确","错误"],ans:0,exp:"在更高或近最大运动强度时，呼吸频率显著增大，潮气量随呼吸频率增大而降低。"},
+    {stem:"因长期进行心血管运动引起血容量增加，主要益处是什么？",opts:["心脏压力降低","最大摄氧量增大","工作肌肉的输氧量增大","减少心脏的工作空间减小"],ans:2,exp:"血容量增加降低血液粘稠度，能增强活动骨骼肌的供氧能力，因为血液在血管中能更顺畅流动。"},
+    {stem:"规律进行身体活动的益处不包括？",opts:["降低焦虑和忧郁状况","改善血脂状况","改善血糖控制状况","增加心血管的舒张压"],ans:3,exp:"规律运动的益处包括降低（而非增加）心血管的收缩压和舒张压。"},
+    {stem:"下列不属于高原病主要症状的一项是？",opts:["气短","多汗","头痛","恶心"],ans:1,exp:"气短、头痛和恶心都属于高原病的症状，而多汗属于热衰竭（中暑）的症状。"},
+    {stem:"对于10秒以内竭尽全力的运动项目，主要的供能系统是？",opts:["磷酸原系统","无氧糖酵解","有氧糖酵解","β氧化"],ans:0,exp:"人体肌肉中ATP和磷酸肌酸储量很小，磷酸原系统只能提供大约10秒钟的能量。"},
+    {stem:"运动时体温调节机制的主要方式是哪一项？",opts:["对流","辐射","蒸发","排泄"],ans:2,exp:"安静状态下体温调节20%通过体表汗液蒸发，运动时则占到80%。"}
+  ]
+};
+
+// ========== 基础解剖 ==========
+const T03 = {
+  id: "t03", title: "基础解剖",
+  questions: [
+    {stem:"在髋关节的肌群中，哪一类主要负责髋关节内收动作？",opts:["前侧肌群","后侧肌群","内侧肌群","外侧肌群"],ans:2,exp:"髋关节的内侧肌群（靠近身体中线的髋部肌肉）包括耻骨肌、短收肌、长收肌、股薄肌和大收肌，主要负责髋关节内收。"},
+    {stem:"猎鸟狗式动作练习能有效锻炼下列哪种作用于躯干的肌肉或肌群？",opts:["多裂肌","竖脊肌","腹直肌","腹横肌"],ans:0,exp:"多裂肌在躯干伸展、转体和侧屈动作中协助稳定脊柱，猎鸟狗式动作练习能有效训练多裂肌。"},
+    {stem:"做负重耸肩练习时，肩部的哪一对肌肉得到最好的强化锻炼？",opts:["大菱形肌与小菱形肌","胸小肌与前锯肌","肩胛提肌与斜方肌","大圆肌与背阔肌"],ans:2,exp:"耸肩练习时，肩胛提肌与斜方肌能有效作用于肩胛带，完成肩胛骨上提动作。"},
+    {stem:"下列关于身体柔韧性的陈述，正确的一项是？",opts:["随着年龄的增长，身体柔韧性水平会由于胶原蛋白水平的下降而提高","一般来说，男性的身体柔韧性高于女性","胶原蛋白是由限制活动并阻碍拉伸的蛋白质构成","身体损伤后自动修护会产生瘢痕组织，瘢痕组织通常会增加损伤部位的柔韧性"],ans:2,exp:"含大量胶原蛋白的结构会限制活动并阻碍拉伸，是韧带和肌腱的主要构成成分。柔韧性随年龄下降，女性通常比男性更柔韧，瘢痕组织限制柔韧性。"},
+    {stem:"下列发生在额状面（冠状面）上的动作是？",opts:["肩胛骨下抑","肘关节屈曲","髋关节伸展","腕关节旋后（外旋）"],ans:0,exp:"发生在额状面上的动作包括：外展、内收、肩胛骨上提、肩胛骨下抑、内翻、外翻。"},
+    {stem:"人体在静息（安静）状态下，通过鼻腔的平均呼吸率等于20-30升/分钟。",opts:["正确","错误"],ans:1,exp:"安静状态下经鼻呼吸约5-6升/分钟，运动时随通气量增大改用口腔呼吸，速率约20-30升/分钟。"},
+    {stem:"当血液流经心脏时，在心脏的哪个部位通过三尖瓣？",opts:["右心房","左心房","右心室","左心室"],ans:2,exp:"血液从右心房流经三尖瓣结构进入右心室。"},
+    {stem:"血液的下列四种成分中，向全身运送激素、食物成分、离子和气体的是？",opts:["血浆","红细胞","白细胞","血小板"],ans:0,exp:"血液的液体成分叫做血浆，负责向全身运送激素、血浆蛋白、食物成分、离子以及各种气体。"},
+    {stem:"下列哪一项不属于人体的四大类组织？",opts:["肌组织","神经组织","上皮组织","血管组织"],ans:3,exp:"人体的四种基本组织为肌组织、神经组织、结缔组织和上皮组织，血管组织不在其中。"},
+    {stem:"关于肱骨内上髁与外上髁的比较，以下说法正确的是？",opts:["内上髁比外上髁更靠近身体前部","内上髁比外上髁更靠近身体后部","内上髁比外上髁更靠近身体中线","内上髁比外上髁更远离身体中线"],ans:2,exp:"“内”是解剖学位置术语，意思是“靠近身体中线”，“外”则指“远离身体中线”。"}
+  ]
+};
+
+// ========== 基础营养和生物功能 ==========
+const T04 = {
+  id: "t04", title: "基础营养和生物功能",
+  questions: [
+    {stem:"在开始某项运动方案前，具有下列哪项状况的客户应事先进行营养咨询？",opts:["骨质疏松","低钠血症","高血压","糖尿病"],ans:3,exp:"对糖尿病患者而言，营养摄入、运动和药物三者平衡对维持血糖水平至关重要，应推荐给注册营养师接受全面咨询。"},
+    {stem:"下列矿物质中，女性的推荐膳食容许量（RDA）为男性两倍的是？",opts:["锌","铁","磷","铜"],ans:1,exp:"女性铁的RDA为18毫克，男性仅为8毫克。铁在血红蛋白形成、改善血液质量等方面起重要作用。"},
+    {stem:"膳食中必须包含的营养素为？",opts:["维生素K","生物素","维生素D","叶酸"],ans:3,exp:"维生素必须通过食物摄取，只有三种例外：维生素K和生物素也能通过肠道菌群产生，维生素D可通过日照自行合成。叶酸必须从食物摄取。"},
+    {stem:"在大部分情况下，当脂肪摄入量低于总能量的15%，这种低脂膳食者的运动成绩会提高。",opts:["正确","错误"],ans:1,exp:"推荐运动员脂肪摄入占总热量20-25%，没有证据表明极低脂饮食（<15%）或极高脂饮食（>30%）有助于提高运动成绩。"},
+    {stem:"从国家体重控制登记库数据中总结的经验中得出的10条观点不包括哪一项？",opts:["吃早餐","注意控制食欲","避免称体重","保持乐观心态"],ans:2,exp:"减重成功者应定期称重（至少每周一次）以监督体重变化，而非避免称体重。"},
+    {stem:"碳水化合物是机体优先使用的产能营养素，每克碳水化合物含多少千卡热量？",opts:["2千卡/克","4千卡/克","7千卡/克","9千卡/克"],ans:1,exp:"碳水化合物含约4千卡/克，蛋白质也约4千卡/克，脂肪9千卡/克，酒精7千卡/克。"},
+    {stem:"客户必须每天消耗1000卡的热量才能实现每周减重1磅的目标。",opts:["正确","错误"],ans:1,exp:"3500卡=1磅，每天消耗1000卡相当于每周减重2磅。建议每天消耗500卡以实现每周减重1磅的可持续目标。"},
+    {stem:"参与细胞膜功能，产生胆酸用于吸收脂肪，代谢脂溶性维生素，生成维生素D，哪种营养素具备全部上述功能？",opts:["蛋白质","碳水化合物","胆固醇","ω-3脂肪酸"],ans:2,exp:"胆固醇在细胞膜功能中发挥重要作用，能促进胆酸生成、代谢脂溶性维生素、生成维生素D和一些激素。"},
+    {stem:"一名客户发现自己怀孕了，问应该吃哪些食物来增加叶酸的摄入。最好的回复是？",opts:["绿叶素菜, 器官肉, 干豆, 豌豆与扁豆","柑橘类水果，浆果和蔬菜","绿叶素菜, 水果, 乳制品与谷物制品","牛奶，动物肝脏, 鸡蛋与花生"],ans:0,exp:"绿叶蔬菜、器官肉、干豆、豌豆与扁豆是叶酸的良好来源。"},
+    {stem:"客户是一名高中足球队队员，对使用升糖指数帮助自己在训练和比赛后补充体能很感兴趣。最适合该客户的一项是？",opts:["果脯","黑麦面包","燕麦片","草莓"],ans:0,exp:"包括果脯在内的高升糖指数碳水化合物是补充体能的最佳食物，黑麦面包为中GI，燕麦片和草莓为低GI。"}
+  ]
+};
+
+// ========== 章节索引：把所有章节汇总为一个数组，供 app.js 使用 ==========
+const ALL_CHAPTERS = [
+  CH01, CH02, CH03, CH04, CH05, CH06, CH07, CH08, CH09, CH10,
+  CH11, CH12, CH13, CH14, CH15, CH16, CH17, CH18,
+  T01, T02, T03, T04
+];
+
+
+
+const LETTERS=["A","B","C","D"];
+const TOTAL_ALL = ALL_CHAPTERS.reduce((s,c)=>s+c.questions.length,0);
+
+/* ============ 存储层（localStorage，退出/关闭后仍保留） ============ */
+const uKey=n=>"acefull_user_"+n.toLowerCase();
+function sGet(k){try{const r=localStorage.getItem(k);return r?JSON.parse(r):null;}catch(e){return null;}}
+function sSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}}
+function sDel(k){try{localStorage.removeItem(k);}catch(e){}}
+const SESS="acefull_session";
+
+/* ============ 状态 ============ */
+let USER=null;          // {name, pass}
+let REC={};              // {"chid:idx":{picked,correct}}
+let order=[];             // 当前一轮题目引用数组 [{cid,idx}]
+let pos=0;
+let liveRight=0, liveDone=0;
+let curChapterId=null;    // 当前章节详情页对应的章节 id（null 表示在首页）
+let quizReturnView="home"; // 答题结束后返回哪个视图: "home" | "chapter"
+
+const $=id=>document.getElementById(id);
+const chapterById=id=>ALL_CHAPTERS.find(c=>c.id===id);
+const recKey=(cid,idx)=>cid+":"+idx;
+
+/* ---------- 登录逻辑 ---------- */
+let mode="login";
+$("toggleMode").onclick=()=>{
+  mode=mode==="login"?"register":"login";
+  $("loginTitle").textContent=mode==="login"?"私教全书题库":"创建账号";
+  $("loginBtn").textContent=mode==="login"?"登录":"注册并进入";
+  $("toggleMode").textContent=mode==="login"?"还没有账号？注册一个":"已有账号？去登录";
+  $("loginErr").textContent="";
+};
+$("loginBtn").onclick=doAuth;
+$("uPass").addEventListener("keydown",e=>{if(e.key==="Enter")doAuth();});
+$("uName").addEventListener("keydown",e=>{if(e.key==="Enter")$("uPass").focus();});
+
+function doAuth(){
+  const name=$("uName").value.trim();
+  const pass=$("uPass").value;
+  const err=$("loginErr");
+  if(!name){err.textContent="请输入用户名。";return;}
+  if(!pass){err.textContent="请输入密码。";return;}
+  const existing=sGet(uKey(name));
+  if(mode==="register"){
+    if(existing){err.textContent="该用户名已存在，请直接登录或换一个。";return;}
+    const fresh={name,pass,rec:{}};
+    sSet(uKey(name),fresh);
+    enter(fresh);
+  }else{
+    if(!existing){err.textContent="没有找到该用户，请先注册。";return;}
+    if(existing.pass!==pass){err.textContent="密码不正确。";return;}
+    enter(existing);
+  }
+}
+function enter(data){
+  USER={name:data.name,pass:data.pass};
+  REC=data.rec||{};
+  sSet(SESS,data.name);
+  $("uName").value="";$("uPass").value="";$("loginErr").textContent="";
+  $("loginScene").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  $("curUser").textContent=USER.name;
+  showHome();
+}
+$("logoutBtn").onclick=()=>{
+  USER=null;REC={};
+  sDel(SESS);
+  $("app").classList.add("hidden");
+  $("loginScene").classList.remove("hidden");
+  $("quiz").classList.add("hidden");
+  $("chapterDash").classList.add("hidden");
+  $("home").classList.remove("hidden");
+};
+$("brandHome").onclick=()=>{ if(USER) showHome(); };
+
+function persist(){
+  if(!USER)return;
+  sSet(uKey(USER.name),{name:USER.name,pass:USER.pass,rec:REC});
+}
+
+/* ---------- 统计工具 ---------- */
+function statsFor(keys){
+  const answered=keys.length;
+  const right=keys.filter(k=>REC[k]&&REC[k].correct).length;
+  const wrong=answered-right;
+  const rate=answered?Math.round(right/answered*100):null;
+  return {answered,right,wrong,rate};
+}
+function chapterKeys(cid){
+  const ch=chapterById(cid);
+  return ch.questions.map((_,i)=>recKey(cid,i));
+}
+function allKeys(){
+  let arr=[];
+  ALL_CHAPTERS.forEach(c=>c.questions.forEach((_,i)=>arr.push(recKey(c.id,i))));
+  return arr;
+}
+
+/* ============ 首页（全库仪表盘 + 章节列表） ============ */
+function showHome(){
+  curChapterId=null;
+  $("quiz").classList.add("hidden");
+  $("chapterDash").classList.add("hidden");
+  $("home").classList.remove("hidden");
+
+  const keys=allKeys();
+  const answeredKeys=keys.filter(k=>REC[k]);
+  const s=statsFor(answeredKeys);
+  $("sAnswered").textContent=s.answered;
+  $("sTotal").textContent=TOTAL_ALL;
+  $("sRate").textContent=s.rate===null?"—":s.rate+"%";
+  $("progFill").style.width=(s.answered/TOTAL_ALL*100)+"%";
+  $("progText").textContent=`进度 ${s.answered} / ${TOTAL_ALL}`;
+  $("corrText").textContent=`答对 ${s.right} · 答错 ${s.wrong}`;
+
+  const wrongExists=keys.some(k=>REC[k]&&!REC[k].correct);
+  $("wrongAllBtn").disabled=!wrongExists;
+
+  // 章节列表
+  const list=$("chList");list.innerHTML="";
+  ALL_CHAPTERS.forEach((c,ci)=>{
+    const ckeys=chapterKeys(c.id);
+    const answered=ckeys.filter(k=>REC[k]).length;
+    const cs=statsFor(ckeys.filter(k=>REC[k]));
+    const card=document.createElement("div");
+    card.className="chcard";
+    card.innerHTML=`
+      <div class="chnum">${String(ci+1).padStart(2,"0")}</div>
+      <div class="chbody">
+        <div class="chtitle">${c.title}</div>
+        <div class="chmeta"><span>${c.questions.length} 题</span><span>已作答 ${answered}</span></div>
+        <div class="chmini"><i style="width:${(answered/c.questions.length*100)}%"></i></div>
+      </div>
+      <div class="chrate ${cs.rate===null?'na':''}">${cs.rate===null?"—":cs.rate+"%"}</div>
+    `;
+    card.onclick=()=>openChapter(c.id);
+    list.appendChild(card);
+  });
+}
+
+/* ---------- 全库练习按钮 ---------- */
+$("startAllBtn").onclick=()=>{
+  order=[]; ALL_CHAPTERS.forEach(c=>c.questions.forEach((_,i)=>order.push({cid:c.id,idx:i})));
+  shuffle(order);
+  pos=0;liveRight=0;liveDone=0;quizReturnView="home";startQuiz();
+};
+$("resumeAllBtn").onclick=()=>{
+  order=[]; ALL_CHAPTERS.forEach(c=>c.questions.forEach((_,i)=>{if(!REC[recKey(c.id,i)])order.push({cid:c.id,idx:i});}));
+  if(order.length===0){ALL_CHAPTERS.forEach(c=>c.questions.forEach((_,i)=>order.push({cid:c.id,idx:i})));}
+  shuffle(order);
+  pos=0;liveRight=0;liveDone=0;quizReturnView="home";startQuiz();
+};
+$("wrongAllBtn").onclick=()=>{
+  order=[]; ALL_CHAPTERS.forEach(c=>c.questions.forEach((_,i)=>{const k=recKey(c.id,i);if(REC[k]&&!REC[k].correct)order.push({cid:c.id,idx:i});}));
+  if(!order.length)return;
+  shuffle(order);
+  pos=0;liveRight=0;liveDone=0;quizReturnView="home";startQuiz();
+};
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+/* ============ 章节详情页 ============ */
+function openChapter(cid){
+  curChapterId=cid;
+  const c=chapterById(cid);
+  $("home").classList.add("hidden");
+  $("quiz").classList.add("hidden");
+  $("chapterDash").classList.remove("hidden");
+  $("cTitle").textContent=c.title;
+  renderChapterDash();
+}
+$("chBackBtn").onclick=showHome;
+
+function renderChapterDash(){
+  const c=chapterById(curChapterId);
+  const keys=chapterKeys(curChapterId);
+  const answeredKeys=keys.filter(k=>REC[k]);
+  const s=statsFor(answeredKeys);
+  $("cAnswered").textContent=s.answered;
+  $("cTotal").textContent=c.questions.length;
+  $("cRate").textContent=s.rate===null?"—":s.rate+"%";
+  $("cProgFill").style.width=(s.answered/c.questions.length*100)+"%";
+  $("cProgText").textContent=`进度 ${s.answered} / ${c.questions.length}`;
+  $("cCorrText").textContent=`答对 ${s.right} · 答错 ${s.wrong}`;
+
+  const wrongExists=keys.some(k=>REC[k]&&!REC[k].correct);
+  $("cWrongBtn").disabled=!wrongExists;
+
+  const map=$("cQmap");map.innerHTML="";
+  c.questions.forEach((q,i)=>{
+    const k=recKey(curChapterId,i);
+    const d=document.createElement("button");
+    d.className="qdot";d.textContent=i+1;
+    if(REC[k]) d.classList.add(REC[k].correct?"ok":"bad");
+    d.onclick=()=>{
+      order=[{cid:curChapterId,idx:i}];pos=0;liveRight=0;liveDone=0;quizReturnView="chapter";startQuiz();
+    };
+    map.appendChild(d);
+  });
+}
+
+$("cStartBtn").onclick=()=>{
+  const c=chapterById(curChapterId);
+  order=c.questions.map((_,i)=>({cid:curChapterId,idx:i}));
+  pos=0;liveRight=0;liveDone=0;quizReturnView="chapter";startQuiz();
+};
+$("cResumeBtn").onclick=()=>{
+  const c=chapterById(curChapterId);
+  let rest=c.questions.map((_,i)=>i).filter(i=>!REC[recKey(curChapterId,i)]);
+  if(rest.length===0) rest=c.questions.map((_,i)=>i);
+  order=rest.map(i=>({cid:curChapterId,idx:i}));
+  pos=0;liveRight=0;liveDone=0;quizReturnView="chapter";startQuiz();
+};
+$("cWrongBtn").onclick=()=>{
+  const c=chapterById(curChapterId);
+  const wrong=c.questions.map((_,i)=>i).filter(i=>{const k=recKey(curChapterId,i);return REC[k]&&!REC[k].correct;});
+  if(!wrong.length)return;
+  order=wrong.map(i=>({cid:curChapterId,idx:i}));
+  pos=0;liveRight=0;liveDone=0;quizReturnView="chapter";startQuiz();
+};
+
+/* ============ 答题界面 ============ */
+let answeredThis=false;
+function startQuiz(){
+  $("home").classList.add("hidden");
+  $("chapterDash").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
+  renderQ();
+}
+function renderQ(){
+  answeredThis=false;
+  const ref=order[pos];
+  const ch=chapterById(ref.cid);
+  const q=ch.questions[ref.idx];
+  const label = order.length>1 && new Set(order.map(o=>o.cid)).size>1
+    ? `${ch.title.split("：")[0]} · 第${ref.idx+1}题`
+    : `第 ${pos+1} / ${order.length} 题`;
+  $("qCount").textContent=label;
+  $("qFill").style.width=((pos)/order.length*100)+"%";
+  $("qLive").textContent=liveDone?Math.round(liveRight/liveDone*100)+"%":"—";
+  $("qStem").textContent=q.stem;
+  const box=$("qOpts");box.innerHTML="";
+  q.opts.forEach((t,i)=>{
+    const b=document.createElement("button");
+    b.className="opt";
+    b.innerHTML=`<span class="key">${LETTERS[i]||(i+1)}</span><span>${t}</span>`;
+    b.onclick=()=>pick(i,b);
+    box.appendChild(b);
+  });
+  const ex=$("qExplain");ex.classList.remove("show");
+  $("nextBtn").textContent=pos===order.length-1?"完成":"下一题";
+  $("nextBtn").disabled=true;$("nextBtn").style.opacity=.5;
+}
+function pick(i,btn){
+  if(answeredThis)return;
+  answeredThis=true;
+  const ref=order[pos];
+  const ch=chapterById(ref.cid);
+  const q=ch.questions[ref.idx];
+  const correct=i===q.ans;
+  [...$("qOpts").children].forEach((el,idx)=>{
+    el.disabled=true;
+    if(idx===q.ans)el.classList.add("correct");
+    if(idx===i&&!correct)el.classList.add("wrong");
+  });
+  REC[recKey(ref.cid,ref.idx)]={picked:i,correct};
+  persist();
+  liveDone++;if(correct)liveRight++;
+  $("qLive").textContent=Math.round(liveRight/liveDone*100)+"%";
+  const ex=$("qExplain");
+  $("exBadge").textContent=correct?"回答正确":"回答错误";
+  $("exBadge").className="badge "+(correct?"ok":"bad");
+  $("exAns").textContent=`正确答案：${LETTERS[q.ans]||(q.ans+1)}　${q.opts[q.ans]}`;
+  $("exText").textContent=q.exp;
+  ex.classList.add("show");
+  $("nextBtn").disabled=false;$("nextBtn").style.opacity=1;
+}
+$("nextBtn").onclick=()=>{
+  if(!answeredThis)return;
+  if(pos<order.length-1){pos++;renderQ();}
+  else finishQuiz();
+};
+$("backBtn").onclick=finishQuiz;
+function finishQuiz(){
+  if(quizReturnView==="chapter" && curChapterId){
+    $("quiz").classList.add("hidden");
+    $("chapterDash").classList.remove("hidden");
+    renderChapterDash();
+  }else{
+    showHome();
+  }
+}
+
+/* ---------- 重置记录 ---------- */
+$("resetBtn").onclick=()=>{
+  if(!confirm("确定清空当前用户的全部做题记录（全部22章）吗？此操作无法撤销。"))return;
+  REC={};persist();showHome();
+};
+
+/* ---------- 自动登录：恢复上次会话 ---------- */
+(function autoLogin(){
+  const last=sGet(SESS);
+  if(!last)return;
+  const data=sGet(uKey(last));
+  if(data)enter(data);
+})();
+
+</script>
+</body>
+</html>
